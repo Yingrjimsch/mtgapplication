@@ -1,5 +1,7 @@
 {
   "name": "mtgapplication",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
