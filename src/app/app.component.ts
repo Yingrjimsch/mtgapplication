@@ -16,9 +16,24 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'List',
-      url: '/list',
-      icon: 'list'
+      title: 'Deck List',
+      url: '/deck-list',
+      icon: 'albums'
+    },
+    {
+      title: 'Scann Cards',
+      url: '/scanner',
+      icon: 'qr-scanner'
+    },
+    {
+      title: 'My Archive',
+      url: '/my-archive',
+      icon: 'archive'
+    },
+    {
+      title: 'Account',
+      url: '/account-settings',
+      icon: 'person'
     }
   ];
 

@@ -9,7 +9,7 @@ export class GoogleCloudVisionService {
 
   constructor(public http: Http) { }
 
-  getText(base64Image) {
+  getTextDetectionResponse(base64Image: any) {
 
     const body = {
       'requests': [
