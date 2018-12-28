@@ -13,32 +13,46 @@ export class AppComponent {
     {
       title: 'Home',
       url: '/home',
-      icon: 'home'
+      route: 'home',
+      icon: 'home',
+      device: 'all'
     },
     {
       title: 'Deck List',
       url: '/deck-list',
-      icon: 'albums'
+      route: 'deck-list',
+      icon: 'albums',
+      device: 'all'
     },
     {
       title: 'Scann Cards',
       url: '/scanner',
-      icon: 'qr-scanner'
+      route: 'scanner',
+      icon: 'qr-scanner',
+      device: 'mobile'
     },
     {
       title: 'My Archive',
       url: '/my-archive',
-      icon: 'archive'
+      route: 'my-archive',
+      icon: 'archive',
+      device: 'all'
     },
     {
       title: 'Account',
       url: '/account-settings',
-      icon: 'person'
+      route: 'account-settings',
+      icon: 'person',
+      device: 'all'
     }
   ];
 
+  getAppPagesByDevice(device: string, all: string = 'all') {
+    return this.appPages.filter(p => (p.device === device || p.device === all));
+  }
+
   constructor(
-    private platform: Platform,
+    public plt: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar
   ) {
@@ -46,7 +60,7 @@ export class AppComponent {
   }
 
   initializeApp() {
-    this.platform.ready().then(() => {
+    this.plt.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

@@ -23,4 +23,5 @@ const routes: Routes = [
   ],
   declarations: [MyArchivePage]
 })
-export class MyArchivePageModule {}
+export class MyArchivePageModule {
+}

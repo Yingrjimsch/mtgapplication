@@ -1,9 +1,44 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>myArchive</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="centeredText"> My Archive </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-searchbar></ion-searchbar>
+  <ion-grid *ngIf="!plt.is('mobile')">
+    <ion-row>
+      <ion-col *ngFor="let item of items">
+        <ion-card class="cardWithImageAndText">
+          <ion-item lines="none">
+            <ion-title class="centeredText">4x</ion-title>
+            <ion-button fill="clear" slot="end" size="large" color="dark">
+              <ion-icon role="button" name="more"></ion-icon>
+            </ion-button>
+          </ion-item>
+          <ion-card-content
+            ><img
+              src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439314&type=card"
+          /></ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list *ngIf="plt.is('mobile')">
+    <ion-item *ngFor="let item of items">
+      <ion-thumbnail slot="start">
+        <img
+          src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439314&type=card"
+        />
+      </ion-thumbnail>
+      <ion-label>Maximize Velocity</ion-label>
+      <ion-note slot="end">4x</ion-note>
+      <ion-button fill="clear" slot="end" size="large" color="dark">
+          <ion-icon role="button" name="more"></ion-icon>
+        </ion-button>
+    </ion-item>
+  </ion-list>
 </ion-content>

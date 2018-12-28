@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-my-archive',
@@ -7,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyArchivePage implements OnInit {
 
-  constructor() { }
+  public items = [1, 2, 3, 4];
+  constructor(public plt: Platform) { }
 
   ngOnInit() {
   }

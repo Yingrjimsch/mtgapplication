@@ -6,6 +6,9 @@ import { AlertService } from '../alert.service';
 import { DatabaseService } from '../database.service';
 import { ScannedCard } from '../scanned-card';
 import { Platform } from '@ionic/angular';
+import { MagicTheGatheringService } from '../magic-the-gathering.service';
+import { Card } from '../card';
+import { ToastService } from '../toast.service';
 
 @Component({
   selector: 'app-scanner',
@@ -14,11 +17,15 @@ import { Platform } from '@ionic/angular';
 })
 export class ScannerPage implements OnInit {
 
+  public card: Card;
+
   constructor(
     private camera: Camera,
     private vision: GoogleCloudVisionService,
     private alert: AlertService,
     private db: DatabaseService,
+    private mtg: MagicTheGatheringService,
+    private toast: ToastService,
     public plt: Platform
   ) {}
 
@@ -35,8 +42,9 @@ export class ScannerPage implements OnInit {
       imageData => {
         this.vision.getTextDetectionResponse(imageData).subscribe(
           result => {
+            this.toast.presentSuccessToast('Text successfully read!');
             const sc: ScannedCard = this.parseTextDetectionResponse(result);
-            this.alert.showAlert(sc.getName() + '\n' + sc.getLanguage());
+            this.parseMTGServiceResponse(sc);
             // CreateItem with databaseService !
             // this.saveResults(imageData, result.json().responses);
           },
@@ -49,6 +57,14 @@ export class ScannerPage implements OnInit {
         this.alert.showAlert(err);
       }
     );
+  }
+
+  parseMTGServiceResponse(scannedCard: ScannedCard) {
+    this.mtg.getCard(scannedCard).toPromise().then(response => {
+      this.toast.presentSuccessToast('Card successfully found!');
+      const c = response.json().cards[0];
+      this.card = new Card(c.name, c.multiverseid, c.imageUrl);
+    });
   }
 
   parseTextDetectionResponse(textDetectionResponse: any) {

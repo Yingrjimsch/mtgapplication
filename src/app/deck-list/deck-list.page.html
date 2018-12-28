@@ -1,9 +1,41 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>deckList</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="centeredText"> Deck List </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-card *ngFor="let item of items">
+    <ion-item lines="none" *ngIf="!plt.is('mobile')">
+      <ion-chip color="danger" outline="true">
+        <ion-label>25 Cards</ion-label>
+      </ion-chip>
+      <ion-chip> <ion-label>Standard Legal</ion-label> </ion-chip>
+      <ion-chip> <ion-label>~ 40 CHF</ion-label> </ion-chip>
+      <ion-button fill="clear" slot="end" size="large" color="dark">
+        <ion-icon role="button" name="more"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-title> My MTG Deck 1 </ion-title>
+        <ion-button
+          *ngIf="plt.is('mobile')"
+          fill="clear"
+          slot="end"
+          size="large"
+          color="dark"
+          (click)="presentActionSheet()"
+        >
+          <ion-icon role="button" name="more"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button> <ion-icon name="add"></ion-icon> </ion-fab-button>
+  </ion-fab>
 </ion-content>

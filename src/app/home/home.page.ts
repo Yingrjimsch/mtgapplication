@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { MagicTheGatheringService } from '../magic-the-gathering.service';
+import { ScannedCard } from '../scanned-card';
+import { Card } from '../card';
 
 @Component({
   selector: 'app-home',
@@ -6,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-  constructor() {}
+  constructor() { }
 }
