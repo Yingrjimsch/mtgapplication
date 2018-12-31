@@ -27,9 +27,11 @@ export class ScannerPage implements OnInit {
     private mtg: MagicTheGatheringService,
     private toast: ToastService,
     public plt: Platform
-  ) {}
+  ) {
+  }
 
   takePhoto() {
+    this.parseMTGServiceResponse(new ScannedCard('Maximize Velocity', 'en'));
     const options: CameraOptions = {
       quality: 100,
       targetHeight: 700,
@@ -61,10 +63,14 @@ export class ScannerPage implements OnInit {
 
   parseMTGServiceResponse(scannedCard: ScannedCard) {
     this.mtg.getCard(scannedCard).toPromise().then(response => {
-      this.toast.presentSuccessToast('Card successfully found!');
-      const c = response.json().cards[0];
+      let c = response.json().cards[0];
+      console.log(c);
+      // Hier wird die Karte nach Sprache gesucht.
+      c = c.foreignNames.find(f => f.language === 'Japanese');
       this.card = new Card(c.name, c.multiverseid, c.imageUrl);
-    });
+      console.log(this.card);
+      this.toast.presentSuccessToast('Card successfully found!');
+    }).catch(err => this.alert.showAlert(err));
   }
 
   parseTextDetectionResponse(textDetectionResponse: any) {

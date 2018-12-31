@@ -1,9 +1,5 @@
 export class Card {
-  constructor(
-    name: string,
-    multiverseId: string,
-    imgPath: string
-  ) {
+  constructor(name: string, multiverseId: string, imgPath: string) {
     this.name = name;
     this.multiverseId = multiverseId;
     this.imgPath = imgPath;
@@ -20,5 +16,13 @@ export class Card {
 
   getImgPath(): string {
     return this.imgPath;
-}
+  }
+
+  getName(): string {
+    return this.name;
+  }
+
+  getNumberOfCards(): number {
+    return this.numberOfCards;
+  }
 }

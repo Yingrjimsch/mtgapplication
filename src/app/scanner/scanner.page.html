@@ -8,14 +8,14 @@
 </ion-header>
 
 <ion-content>
-  <ion-text class="centeredText">
+  <ion-text *ngIf="card" class="centeredText">
     <h1>Scann a Card</h1>
     <p>
       If you need to translate a card, you can scann it here. For scanning a
       card you have to make a picture.
     </p>
   </ion-text>
-  <div class="centeredContent"><img [src]="card.getImgPath()"/></div>
+  <div *ngIf="card" class="centeredContent"><img [src]="card.getImgPath()"/> <ion-item> <ion-button>Add to a List</ion-button> <ion-button>Add to my Collection</ion-button> </ion-item></div>
   <ion-fab
     *ngIf="plt.is('mobile')"
     vertical="bottom"

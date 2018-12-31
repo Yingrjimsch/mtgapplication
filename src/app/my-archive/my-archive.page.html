@@ -11,34 +11,48 @@
   <ion-searchbar></ion-searchbar>
   <ion-grid *ngIf="!plt.is('mobile')">
     <ion-row>
-      <ion-col *ngFor="let item of items">
+      <ion-col *ngFor="let card of cards">
         <ion-card class="cardWithImageAndText">
           <ion-item lines="none">
-            <ion-title class="centeredText">4x</ion-title>
-            <ion-button fill="clear" slot="end" size="large" color="dark">
-              <ion-icon role="button" name="more"></ion-icon>
-            </ion-button>
+            <ion-title class="centeredText"
+              >{{ card.getNumberOfCards() }}x</ion-title
+            >
+            <ion-icon
+              (click)="presentActionSheet(card)"
+              class="hoverItem marginTBRemoved"
+              fill="clear"
+              slot="end"
+              size="large"
+              color="dark"
+              role="button"
+              name="more"
+            ></ion-icon>
           </ion-item>
-          <ion-card-content
-            ><img
-              src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439314&type=card"
-          /></ion-card-content>
+          <ion-card-content><img [src]="card.getImgPath()"/></ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
   </ion-grid>
   <ion-list *ngIf="plt.is('mobile')">
-    <ion-item *ngFor="let item of items">
+    <ion-item *ngFor="let card of cards">
       <ion-thumbnail slot="start">
-        <img
-          src="http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439314&type=card"
-        />
+        <img [src]="card.getImgPath()" />
       </ion-thumbnail>
-      <ion-label>Maximize Velocity</ion-label>
-      <ion-note slot="end">4x</ion-note>
-      <ion-button fill="clear" slot="end" size="large" color="dark">
-          <ion-icon role="button" name="more"></ion-icon>
-        </ion-button>
+      <ion-label>{{ card.getName() }}</ion-label>
+      <ion-note>{{ card.getNumberOfCards() }}x</ion-note>
+      <ion-icon
+        (click)="presentActionSheet(card)"
+        class="hoverItem marginTBRemoved"
+        fill="clear"
+        slot="end"
+        size="large"
+        color="dark"
+        role="button"
+        name="more"
+      ></ion-icon>
     </ion-item>
   </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button> <ion-icon name="add"></ion-icon> </ion-fab-button>
+  </ion-fab>
 </ion-content>
