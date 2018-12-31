@@ -12,7 +12,7 @@ export const environment = {
     storageBucket: 'mtgapplication.appspot.com',
     messagingSenderId: '881390419206'
   },
-  googleCloudVisionAPIKey : 'AIzaSyCQWy2lRhKFLncOMjWdclIcA97qJ-Rrtp4'
+  googleCloudVisionAPIKey : ''
 };
 
 /*
