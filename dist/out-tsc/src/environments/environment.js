@@ -1,20 +1,18 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
-
-export const environment = {
-  production: false,
-  firebase: {
-    apiKey: "AIzaSyC3RPAh9dT6-xYArKgUa9VkU_50LGuktzs",
-    authDomain: "mtgapplication.firebaseapp.com",
-    databaseURL: "https://mtgapplication.firebaseio.com",
-    projectId: "mtgapplication",
-    storageBucket: "mtgapplication.appspot.com",
-    messagingSenderId: "881390419206"
-  },
-  googleCloudVisionAPIKey : 'AIzaSyC3RPAh9dT6-xYArKgUa9VkU_50LGuktzs'
+export var environment = {
+    production: false,
+    firebase: {
+        apiKey: "AIzaSyC3RPAh9dT6-xYArKgUa9VkU_50LGuktzs",
+        authDomain: "mtgapplication.firebaseapp.com",
+        databaseURL: "https://mtgapplication.firebaseio.com",
+        projectId: "mtgapplication",
+        storageBucket: "mtgapplication.appspot.com",
+        messagingSenderId: "881390419206"
+    },
+    googleCloudVisionAPIKey: 'AIzaSyC3RPAh9dT6-xYArKgUa9VkU_50LGuktzs'
 };
-
 /*
  * For easier debugging in development mode, you can import the following file
  * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
@@ -23,3 +21,4 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+//# sourceMappingURL=environment.js.map

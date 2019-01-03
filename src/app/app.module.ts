@@ -13,7 +13,7 @@ import { from } from 'rxjs';
 
 import { HttpModule } from '@angular/http';
 import { AngularFireModule } from '@angular/fire';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { AngularFirestoreModule  } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 
@@ -26,7 +26,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     HttpModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
+    AngularFirestoreModule,
     AngularFireAuthModule
   ],
   providers: [

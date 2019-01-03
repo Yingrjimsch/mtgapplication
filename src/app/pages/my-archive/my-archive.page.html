@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="centeredText"> My Archive </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-searchbar [(ngModel)]="searchstring"></ion-searchbar>
+  <ion-grid *ngIf="!plt.is('mobile')">
+    <ion-row>
+      <ion-col *ngFor="let card of getMyCards()">
+        <ion-card class="cardWithImageAndText">
+          <ion-item lines="none">
+            <ion-title class="centeredText"
+              >{{ card.numberOfCards }}x</ion-title
+            >
+            <ion-icon
+              (click)="presentActionSheet(card)"
+              class="hoverItem marginTBRemoved"
+              fill="clear"
+              slot="end"
+              size="large"
+              color="dark"
+              role="button"
+              name="more"
+            ></ion-icon>
+          </ion-item>
+          <ion-card-content><img [src]="card.imgPath"/></ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list *ngIf="plt.is('mobile')">
+    <ion-item *ngFor="let card of getMyCards()">
+      <ion-thumbnail slot="start">
+        <img [src]="card.imgPath" />
+      </ion-thumbnail>
+      <ion-label>{{ card.name }}</ion-label>
+      <ion-chip color="light">{{ card.numberOfCards}}x</ion-chip>
+      <ion-icon
+        (click)="presentActionSheet(card)"
+        class="hoverItem marginTBRemoved"
+        fill="clear"
+        slot="end"
+        size="large"
+        color="dark"
+        role="button"
+        name="more"
+      ></ion-icon>
+    </ion-item>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button> <ion-icon name="add"></ion-icon> </ion-fab-button>
+  </ion-fab>
+</ion-content>

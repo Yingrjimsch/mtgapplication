@@ -9,28 +9,24 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: './home/home.module#HomePageModule'
-  },
-  {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule'
+    loadChildren: './pages/home/home.module#HomePageModule'
   },
   {
     path: 'deck-list',
-    loadChildren: './deck-list/deck-list.module#DeckListPageModule'
+    loadChildren: './pages//deck-list/deck-list.module#DeckListPageModule'
   },
   {
     path: 'scanner',
-    loadChildren: './scanner/scanner.module#ScannerPageModule'
+    loadChildren: './pages//scanner/scanner.module#ScannerPageModule'
   },
   {
     path: 'my-archive',
-    loadChildren: './my-archive/my-archive.module#MyArchivePageModule'
+    loadChildren: './pages//my-archive/my-archive.module#MyArchivePageModule'
   },
   {
     path: 'account-settings',
     loadChildren:
-      './account-settings/account-settings.module#AccountSettingsPageModule'
+      './pages//account-settings/account-settings.module#AccountSettingsPageModule'
   }
 ];
 

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="centeredText"> Scanner </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text *ngIf="!card" class="centeredText">
+    <h1>Scann a Card</h1>
+    <p>
+      If you need to translate a card, you can scann it here. For scanning a
+      card you have to make a picture.
+    </p>
+  </ion-text>
+  <div *ngIf="card" class="centeredContent">
+    <h1>Scanned Card</h1>
+    <img [src]="card.imgPath" />
+    <ion-button fill="outline" (click)="presentCardCollections()">Secondary</ion-button>
+  </div>
+  <ion-fab *ngIf="plt.is('mobile')" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button [disabled]="!language" (click)="takePhoto()">
+      <ion-icon name="camera"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
