@@ -15,7 +15,4 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-  constructor(c: CardService) {
-    // c.addCard(new Card('Black Lotus', '382866', 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=382866&type=card')).then(v => console.log(v.id)).catch(c => console.log(c));
-  }
 }

@@ -16,4 +16,13 @@ export class ToastService {
     });
     toast.present();
   }
+
+  async presentErrorToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1000,
+      color: 'danger'
+    });
+    toast.present();
+  }
 }

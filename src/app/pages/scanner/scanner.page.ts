@@ -28,22 +28,23 @@ export class ScannerPage implements OnInit {
 
   constructor(
     private camera: Camera,
-    private vision: GoogleCloudVisionService,
-    private alert: AlertService,
-    private mtg: MagicTheGatheringService,
-    private toast: ToastService,
-    settingsService: SettingsService,
+    private visionService: GoogleCloudVisionService,
+    private alertService: AlertService,
+    private mtgService: MagicTheGatheringService,
+    private toastService: ToastService,
+    private settingsService: SettingsService,
     public plt: Platform,
-    private alertController: AlertController,
     private cardCollectionService: CardCollectionService,
-    private cardService: CardService
+    private cardService: CardService,
   ) {
     settingsService.getLanguage().then(a => {
       this.settings = a.docs.map(a => ({ id: a.id, ...a.data() }) as Settings)[0];
-    });
+      this.takePhoto();
+    }).catch(() => toastService.presentErrorToast('Could not find Settings.'));
   }
 
   takePhoto() {
+    //this.card = new Card('Angelic Rocket', '439528', 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439528&type=card')
     const options: CameraOptions = {
       quality: 100,
       targetHeight: 700,
@@ -54,33 +55,31 @@ export class ScannerPage implements OnInit {
     };
     this.camera.getPicture(options).then(
       imageData => {
-        this.vision.getTextDetectionResponse(imageData).subscribe(
+        this.visionService.getTextDetectionResponse(imageData).subscribe(
           result => {
-            this.toast.presentSuccessToast('Text successfully read!');
+            this.toastService.presentSuccessToast('Text successfully read!');
             const sc: ScannedCard = this.parseTextDetectionResponse(result);
-            this.toast.presentSuccessToast(sc.getName() + " " + sc.getLanguage());
             this.parseMTGServiceResponse(sc);
-            // CreateItem with databaseService !
-            // this.saveResults(imageData, result.json().responses);
           },
-          err => {
-            this.alert.presentErrorAlert('Error while trying to read Text');
+          () => {
+            this.toastService.presentErrorToast('Error while trying to read Text');
           }
         );
       },
-      err => {
-        this.alert.presentErrorAlert('Error while trying to make picture');
+      () => {
+        this.toastService.presentErrorToast('Error while trying to make picture');
       }
     );
   }
 
   parseMTGServiceResponse(scannedCard: ScannedCard) {
-    this.mtg.getCard(scannedCard).toPromise().then(response => {
+    this.mtgService.getCard(scannedCard).toPromise().then(response => {
       let c = response.json().cards[0];
       // Hier wird die Karte nach Sprache gesucht.
       c = c.foreignNames.find(f => (f.language as string).toLowerCase() === this.settings.language.toLowerCase());
       this.card = new Card(c.name, c.multiverseid, c.imageUrl);
-    }).catch(err => this.alert.presentErrorAlert('Error while trying to find card'));
+      this.toastService.presentSuccessToast('Card successfully found!');
+    }).catch(() => this.toastService.presentErrorToast('Error while trying to find card'));
   }
 
   parseTextDetectionResponse(textDetectionResponse: any) {
@@ -92,10 +91,11 @@ export class ScannerPage implements OnInit {
   }
 
   async presentCardCollections() {
-    this.cardCollectionService.getAllCollections().subscribe((cc: CardCollection[]) => {
+    this.cardCollectionService.getAllCollectionsAsPromise().then(a => {
+      const cardCollection = a.docs.map(a => ({ id: a.id, ...a.data() }) as CardCollection);
       const header: string = 'Collections'
       let inputs: AlertInput[] = [];
-      cc.forEach(c => inputs.push({
+      cardCollection.forEach(c => inputs.push({
         name: c.name,
         type: 'checkbox',
         label: c.name,
@@ -115,13 +115,13 @@ export class ScannerPage implements OnInit {
             this.cardService.addCard(this.card)
               .then(v => {
                 this.card.id = v
-                data.forEach(element => this.cardCollectionService.addCardReference(element, this.card));
-              }).catch(err => console.log(err));
+                data.forEach(element => this.cardCollectionService.addCardToCollection(element, this.card));
+                this.toastService.presentSuccessToast('Card successfully added to all lists');
+              }).catch(err => this.toastService.presentErrorToast(err));
           }
         }
       ];
-      this.alert.presentCustomAlert(header, inputs, buttons);
-    })
+      this.alertService.presentCustomAlert(header, inputs, buttons);
+    }).catch(() => this.toastService.presentErrorToast('Could not find Settings.'));
   }
-
 }

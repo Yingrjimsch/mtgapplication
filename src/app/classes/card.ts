@@ -4,7 +4,6 @@ export class Card {
     this.multiverseId = multiverseId;
     this.imgPath = imgPath;
     this.own = false;
-    this.numberOfCards = 1;
     this.foiled = false;
   }
   
@@ -13,6 +12,5 @@ export class Card {
   public multiverseId: string;
   public imgPath: string;
   public own: boolean;
-  public numberOfCards: number;
   public foiled: boolean;
 }

@@ -5,14 +5,14 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyC3RPAh9dT6-xYArKgUa9VkU_50LGuktzs",
+    apiKey: "",
     authDomain: "mtgapplication.firebaseapp.com",
     databaseURL: "https://mtgapplication.firebaseio.com",
     projectId: "mtgapplication",
     storageBucket: "mtgapplication.appspot.com",
     messagingSenderId: "881390419206"
   },
-  googleCloudVisionAPIKey : 'AIzaSyC3RPAh9dT6-xYArKgUa9VkU_50LGuktzs'
+  googleCloudVisionAPIKey : ''
 };
 
 /*

@@ -10,7 +10,7 @@ export class CardService {
   cardPath: string = 'cards';
   constructor(private firestore: AngularFirestore) { }
   
-  addCard(card: Card) {
+  async addCard(card: Card) {
     return this.checkForExistingCard(card.multiverseId).then(c => {
       if (c.size !== 0) {
         return c.docs[0].id;
@@ -20,10 +20,9 @@ export class CardService {
         multiverseId: card.multiverseId,
         imgPath: card.imgPath,
         own: card.own,
-        numberOfCards: card.numberOfCards,
         foiled: card.foiled
-      }).then(ac => { return ac.id;});
-    })
+      }).then(ac => { return ac.id;}).catch(() => { throw 'Something went wrong while adding card.' });
+    }).catch(() => { throw 'Something went wrong while checking for existing card.' })
   }
 
   checkForExistingCard(multiverseId: string) {

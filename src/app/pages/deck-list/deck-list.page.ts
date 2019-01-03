@@ -20,7 +20,7 @@ export class DeckListPage implements OnInit {
     public cardCollectionService: CardCollectionService,
     private alertService: AlertService
   ) {
-    cardCollectionService.getAllCollections().subscribe((cc: CardCollection[]) => this.cardCollections = cc);
+    cardCollectionService.getAllCollectionsToSubscribe().subscribe((cc: CardCollection[]) => this.cardCollections = cc);
   }
 
   async presentActionSheet(item) {

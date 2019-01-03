@@ -38,8 +38,10 @@
       <ion-thumbnail slot="start">
         <img [src]="card.imgPath" />
       </ion-thumbnail>
-      <ion-label>{{ card.name }}</ion-label>
-      <ion-chip color="light">{{ card.numberOfCards}}x</ion-chip>
+      <ion-label>
+        <h2>{{ card.name }}</h2>
+        <p>{{ card.numberOfCards}}x</p>
+      </ion-label>
       <ion-icon
         (click)="presentActionSheet(card)"
         class="hoverItem marginTBRemoved"
