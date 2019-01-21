@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { firestore } from 'firebase';
 import { map } from 'rxjs/operators';
 import { Card } from 'src/app/classes/card';
 import { CardCollection } from 'src/app/classes/card-collection';
