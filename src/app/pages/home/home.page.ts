@@ -15,4 +15,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
+
+  constructor(private c: CardCollectionService, private c3: CardService) {
+    c.getCardsByCollection('jkm30pyPyqzufmB3PIYo')
+    .subscribe(c2 => console.log(c2));
+  }
 }

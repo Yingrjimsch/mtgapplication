@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Card } from '../../classes/card';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { CachedResourceLoader } from '@angular/platform-browser-dynamic/src/resource_loader/resource_loader_cache';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,14 +32,16 @@ export class CardService {
   }
 
   // Not used
-  getCardById(id: string): Card[] {
-    let cards: Card[];
-    this.firestore.collection(this.cardPath).snapshotChanges().pipe(
+  getCardById(cardId: string) {
+    return this.firestore.collection(this.cardPath).snapshotChanges().pipe(
       map(changes =>
         changes.map(a => ({ id: a.payload.doc.id, ...a.payload.doc.data() }))
       )
-    ).toPromise().then((c: Card[]) => cards = c)
-    return cards;
+    ).toPromise();
+  }
+
+  getCardById2(cardId: string) {
+    return this.firestore.collection(this.cardPath).doc(cardId);
   }
 
   getMyCards(): AngularFirestoreCollection<Card> {

@@ -13,4 +13,5 @@ export class Card {
   public imgPath: string;
   public own: boolean;
   public foiled: boolean;
+  public numberOfCards: number;
 }

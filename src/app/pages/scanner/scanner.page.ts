@@ -112,12 +112,14 @@ export class ScannerPage implements OnInit {
         }, {
           text: 'Ok',
           handler: data => {
-            this.cardService.addCard(this.card)
+            data.forEach(cc => this.cardCollectionService.addCardTOCollection2(cc, this.card));
+            /*this.cardService.addCard(this.card)
               .then(v => {
                 this.card.id = v
                 data.forEach(element => this.cardCollectionService.addCardToCollection(element, this.card));
                 this.toastService.presentSuccessToast('Card successfully added to all lists');
               }).catch(err => this.toastService.presentErrorToast(err));
+              */
           }
         }
       ];

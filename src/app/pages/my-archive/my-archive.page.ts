@@ -26,37 +26,6 @@ export class MyArchivePage implements OnInit {
     return this.cards.filter(c => c.name.toLowerCase().includes(this.searchstring.toLowerCase()));
   }
 
-  async presentActionSheet(item) {
-    const header: string = 'Actions';
-    const buttons: ActionSheetButton[] = [
-      {
-        text: 'Delete',
-        role: 'destructive',
-        icon: 'trash',
-        handler: () => {
-          this.cards.splice(this.cards.indexOf(item), 1);
-        }
-      },
-      {
-        text: 'Favorite',
-        icon: 'heart',
-        handler: () => {
-          console.log('Favorite clicked');
-        }
-      },
-      {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          console.log('Cancel clicked');
-        }
-      }
-    ];
-    this.actionSheetService.presentCustomActionSheet(header, buttons);
-  }
-
   ngOnInit() {
   }
-
 }
