@@ -9,16 +9,16 @@ import { ActionSheetService } from 'src/app/services/uiservices/action-sheet.ser
   styleUrls: ['./card-list.component.scss']
 })
 export class CardListComponent implements OnInit {
-  
+
   @Input() public cardCollection: CardCollection;
-  
+
   constructor(public actionSheetService: ActionSheetService) { }
 
   ngOnInit() {
   }
 
   async presentActionSheet(item) {
-    const header: string = 'Actions';
+    const header = 'Actions';
     const buttons: ActionSheetButton[] = [
       {
         text: 'Delete',

@@ -18,7 +18,7 @@ export class AccountSettingsPage implements OnInit {
   }
 
   languageChange() {
-    this.settingsService.setLanguage(this.settings.language)
+    this.settingsService.setLanguage(this.settings.language);
   }
   ngOnInit() {
   }

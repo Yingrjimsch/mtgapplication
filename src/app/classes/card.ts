@@ -6,7 +6,7 @@ export class Card {
     this.own = false;
     this.foiled = false;
   }
-  
+
   public id: string;
   public name: string;
   public multiverseId: string;

@@ -24,7 +24,7 @@ export class DeckListPage implements OnInit {
   }
 
   async presentActionSheet(item) {
-    const header: string = 'Actions';
+    const header = 'Actions';
     const buttons: ActionSheetButton[] = [
       {
         text: 'Delete',
@@ -34,7 +34,7 @@ export class DeckListPage implements OnInit {
           this.cardCollectionService.deleteCardCollection(item.id);
           this.cardCollections.splice(this.cardCollections.indexOf(item), 1);
         }
-      },/*
+      }, /*
         {
           text: 'Share',
           icon: 'share',

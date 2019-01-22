@@ -22,13 +22,12 @@ export class CardCollectionService {
       .toPromise().then(c => {
         if (c.size === 0) {
           this.firestore.collection('cardCollections').doc(collectionId)
-            .collection('cards').doc(card.multiverseId).set({ count: 1, ...card })
-        }
-        else {
+            .collection('cards').doc(card.multiverseId).set({ count: 1, ...card });
+        } else {
           this.firestore.collection('cardCollections').doc(collectionId)
             .collection('cards').doc(card.multiverseId).update({
               number: ++c.docs[0].data()['number']
-            })
+            });
         }
         this.updateCollectionCardNumber(collectionId);
       });
@@ -44,16 +43,15 @@ export class CardCollectionService {
             number: 1,
             cardCollectionId: collectionId,
             cardId: card.id
-          })
-        }
-        else {
+          });
+        } else {
           const doc = c.docs[0];
           this.card_collectionPath.doc(doc.id).update({
             number: ++doc.data()['number']
-          })
+          });
         }
         this.updateCollectionCardNumber(collectionId);
-      }).catch(() => { throw 'Something went wrong while adding card to collection(' + collectionId + ')' })
+      }).catch(() => { throw 'Something went wrong while adding card to collection(' + collectionId + ')' });
   }
 
   private updateCollectionCardNumber(collectionId: string): any {
@@ -61,9 +59,9 @@ export class CardCollectionService {
     doc.get().toPromise().then(d => {
       doc.update({
         numberOfCards: ++d.data()['numberOfCards']
-      })
+      });
 
-    })
+    });
   }
 
   // Usable to display all collection which can change.
@@ -74,7 +72,7 @@ export class CardCollectionService {
     );
   }
 
-  // Usable to display all Collection once 
+  // Usable to display all Collection once
   getAllCollectionsAsPromise() {
     return this.cardCollectionsPath.get().toPromise();
   }
@@ -89,8 +87,9 @@ export class CardCollectionService {
   updateCollection(cardCollection: CardCollection): void {
     this.cardCollectionsPath.doc(cardCollection.id).update({
       name: cardCollection.name,
-    })
-    // cardCollection.cards.forEach(c => this.firestore.collection(this.cardCollectionsPath).doc(cardCollection.id).collection('cards').doc());
+    });
+    // cardCollection.cards.forEach(c => this.firestore.collection(this.cardCollectionsPath)
+    // .doc(cardCollection.id).collection('cards').doc());
   }
 
   getCardsByCollection(collectionId: string) {
@@ -98,16 +97,17 @@ export class CardCollectionService {
       .pipe(
         map(c => /*{*/
           c.map(a => ({ cardId: a.payload.doc.data()['cardId'], ...this.cardService.getCardById2(a.payload.doc.data()['cardId'])}))
-        //this.cardService.getCardById2('hVDpwIEn1P4xxqVYJWeg').toPromise().then(c2 => c.map(d => ({numberOfCards: d.payload.doc.data()['number'], ...c2})))
-        /*c.map(d => ({numberOfCards: d.payload.doc.data()['number'], 
-        ...this.cardService.getCardById2(d.payload.doc.data()['cardId']).toPromise().then(c => {return c as Card})[0]} as Card))})
-      */));
+        // this.cardService.getCardById2('hVDpwIEn1P4xxqVYJWeg').toPromise()
+        // .then(c2 => c.map(d => ({numberOfCards: d.payload.doc.data()['number'], ...c2})))
+        // c.map(d => ({numberOfCards: d.payload.doc.data()['number'],
+        // ...this.cardService.getCardById2(d.payload.doc.data()['cardId']).toPromise().then(c => {return c as Card})[0]} as Card))})
+      ));
   }
 
   deleteCardCollection(collectionId: string) {
-    //Deletes the collection
+    // Deletes the collection
     this.cardCollectionsPath.doc(collectionId).delete();
-    //Deletes all relations between the collection and its cards
+    // Deletes all relations between the collection and its cards
     this.firestore.collection('card_collection', q => q.where('cardCollectionId', '==', collectionId))
       .get().toPromise()
       .then(c => c.docs.forEach(d => this.card_collectionPath.doc(d.id).delete()));

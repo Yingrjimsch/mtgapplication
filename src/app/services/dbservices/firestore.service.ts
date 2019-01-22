@@ -30,7 +30,7 @@ export class FirestoreService {
       userId: userId,
       numberOfCards: 0,
       deckName: deckName
-    })
+    });
   }
 
   deleteDeck(deckId: string) {
@@ -56,7 +56,7 @@ export class FirestoreService {
     const cardRef = deckRef.collection('cards').doc(card.id);
     return this.firestore.firestore.runTransaction(async transaction => {
       const c = await transaction.get(cardRef);
-      if(c.data()['number'] <= card.numberOfCards) {
+      if (c.data()['number'] <= card.numberOfCards) {
         deck.numberOfCards--;
       }
       transaction.update(deckRef, { numberOfCards: deck.numberOfCards });

@@ -44,7 +44,7 @@ export class ScannerPage implements OnInit {
   }
 
   takePhoto() {
-    //this.card = new Card('Angelic Rocket', '439528', 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439528&type=card')
+    // this.card = new Card('Angelic Rocket', '439528', 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439528&type=card')
     const options: CameraOptions = {
       quality: 100,
       targetHeight: 700,
@@ -93,8 +93,8 @@ export class ScannerPage implements OnInit {
   async presentCardCollections() {
     this.cardCollectionService.getAllCollectionsAsPromise().then(a => {
       const cardCollection = a.docs.map(a => ({ id: a.id, ...a.data() }) as CardCollection);
-      const header: string = 'Collections'
-      let inputs: AlertInput[] = [];
+      const header = 'Collections';
+      const inputs: AlertInput[] = [];
       cardCollection.forEach(c => inputs.push({
         name: c.name,
         type: 'checkbox',

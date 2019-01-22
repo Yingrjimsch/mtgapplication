@@ -4,7 +4,7 @@ export class CardCollection {
   public id: string;
   public name: string;
   public cards: Array<Card> = new Array<Card>();
-  public numberOfCards: number = 0;
+  public numberOfCards = 0;
 
   constructor(name: string) {
     this.name = name;

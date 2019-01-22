@@ -9,9 +9,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CardService {
-  cardPath: string = 'cards';
+  cardPath = 'cards';
   constructor(private firestore: AngularFirestore) { }
-  
+
   async addCard(card: Card) {
     return this.checkForExistingCard(card.multiverseId).then(c => {
       if (c.size !== 0) {
@@ -23,8 +23,8 @@ export class CardService {
         imgPath: card.imgPath,
         own: card.own,
         foiled: card.foiled
-      }).then(ac => { return ac.id;}).catch(() => { throw 'Something went wrong while adding card.' });
-    }).catch(() => { throw 'Something went wrong while checking for existing card.' })
+      }).then(ac => ac.id).catch(() => {throw 'Something went wrong while adding card.'});
+    }).catch(() => {throw 'Something went wrong while checking for existing card.'});
   }
 
   checkForExistingCard(multiverseId: string) {

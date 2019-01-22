@@ -18,9 +18,9 @@ import { FirestoreService } from 'src/app/services/dbservices/firestore.service'
 export class HomePage {
 
   constructor(private c: FirestoreService, private c3: CardService) {
-    let card: Card = new Card('test', 'xnxx', 'path');
+    const card: Card = new Card('test', 'xnxx', 'path');
     card.id = '09987';
-    let deck: CardCollection = new CardCollection('TestDeck');
+    const deck: CardCollection = new CardCollection('TestDeck');
     deck.id = 'JdT5KwAyo5Jd8OqRUDit';
     deck.numberOfCards = 0;
     c.addCardToDeck(deck, card);

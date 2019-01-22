@@ -12,7 +12,7 @@ import { ActionSheetButton } from '@ionic/core';
   styleUrls: ['./my-archive.page.scss'],
 })
 export class MyArchivePage implements OnInit {
-  public searchstring: string = '';
+  public searchstring = '';
   public cards: Array<Card> = new Array<Card>();
   constructor(public plt: Platform, cardService: CardService, private actionSheetService: ActionSheetService) {
     cardService.getMyCards().snapshotChanges().pipe(

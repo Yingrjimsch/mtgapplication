@@ -8,7 +8,7 @@ import { Settings } from '../../classes/settings';
   providedIn: 'root'
 })
 export class SettingsService {
-  private settingsCollection: string = 'settings';
+  private settingsCollection = 'settings';
   constructor(private firestore: AngularFirestore) { }
 
   getLanguage() {
@@ -18,6 +18,6 @@ export class SettingsService {
   setLanguage(l: string) {
     this.firestore.collection(this.settingsCollection).doc('language').update({
       language: l
-    })
+    });
   }
 }
