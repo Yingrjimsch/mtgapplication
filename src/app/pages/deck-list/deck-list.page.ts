@@ -5,6 +5,8 @@ import { AlertService } from '../../services/uiservices/alert.service';
 import { ActionSheetService } from '../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-deck-list',
@@ -17,9 +19,10 @@ export class DeckListPage implements OnInit {
     public plt: Platform,
     private actionSheetService: ActionSheetService,
     public firestoreService: FirestoreService,
+    public router: Router,
     private alertService: AlertService
   ) {
-    firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').subscribe((cc: CardCollection[]) => this.cardCollections = cc);
+    firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').subscribe(decks => this.cardCollections = decks);
   }
 
   async presentActionSheet(deck: CardCollection) {
@@ -90,6 +93,10 @@ export class DeckListPage implements OnInit {
       }
     ];
     this.alertService.presentCustomAlert('New Card Collection', inputs, buttons);
+  }
+
+  openDeckDetail(deck: CardCollection) {
+    this.router.navigate(['/deckDetail', deck.id]);
   }
 
   ngOnInit() { }

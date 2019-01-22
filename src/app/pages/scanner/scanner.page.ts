@@ -95,7 +95,7 @@ export class ScannerPage implements OnInit {
   ngOnInit() {
   }
 
-  async presentCardCollections() {
+  /*async presentCardCollections() {
     this.cardCollectionService.getAllCollectionsAsPromise().then(a => {
       const cardCollection = a.docs.map(a => ({ id: a.id, ...a.data() }) as CardCollection);
       const header = 'Collections';
@@ -118,13 +118,35 @@ export class ScannerPage implements OnInit {
           text: 'Ok',
           handler: data => {
             data.forEach((deck: CardCollection) => this.firestoreService.addCardToDeck(deck, this.card));
-            /*this.cardService.addCard(this.card)
-              .then(v => {
-                this.card.id = v
-                data.forEach(element => this.cardCollectionService.addCardToCollection(element, this.card));
-                this.toastService.presentSuccessToast('Card successfully added to all lists');
-              }).catch(err => this.toastService.presentErrorToast(err));
-              */
+          }
+        }
+      ];
+      this.alertService.presentCustomAlert(header, inputs, buttons);
+    }).catch(() => this.toastService.presentErrorToast('Could not find Settings.'));
+  }*/
+
+  async presentCardCollections() {
+    this.firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').toPromise().then(decks => {
+      const header = 'Collections';
+      const inputs: AlertInput[] = [];
+      decks.forEach(c => inputs.push({
+        name: c.deckName,
+        type: 'checkbox',
+        label: c.deckName,
+        value: c.id
+      }));
+      const buttons: AlertButton[] = [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: data => {
+            data.forEach((deck: CardCollection) => this.firestoreService.addCardToDeck(deck, this.card));
           }
         }
       ];

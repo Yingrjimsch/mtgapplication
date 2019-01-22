@@ -13,7 +13,7 @@ export class FirestoreService {
 
   getDecksByUserId(id: string, isArchive: boolean = false) {
     return this.firestore.collection('decks', q => q.where('userId', '==', id).where('isArchive', '==', isArchive)).snapshotChanges().pipe(
-      map(changes => changes.map(deck => ({ id: deck.payload.doc.id, ...deck.payload.doc.data() }))
+      map(changes => changes.map(deck => ({ id: deck.payload.doc.id, ...deck.payload.doc.data() }) as CardCollection)
       )
     );
   }
