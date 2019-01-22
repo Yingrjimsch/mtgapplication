@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MagicTheGatheringService } from '../../services/httpservices/magic-the-gathering.service';
-import { ScannedCard } from '../../classes/scanned-card';
 import { Card } from '../../classes/card';
 import { CardCollectionService } from '../../services/dbservices/card-collection.service';
 import { CardCollection } from '../../classes/card-collection';
@@ -9,6 +8,7 @@ import { CardService } from '../../services/dbservices/card.service';
 import { SettingsService } from '../../services/dbservices/settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
+import { Languages } from 'src/app/enums/languages';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +24,7 @@ export class HomePage {
     deck.id = 'JdT5KwAyo5Jd8OqRUDit';
     deck.numberOfCards = 0;
     c.addCardToDeck(deck, card);
+    console.log(Languages['en']);
     // c.getCardsByDeckId('JdT5KwAyo5Jd8OqRUDit').subscribe(l => console.log(l))
   }
 }

@@ -17,7 +17,7 @@
   </ion-text>
   <div *ngIf="card" class="centeredContent">
     <h1>Scanned Card</h1>
-    <img [src]="card.imgPath" />
+    <img [src]="'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + card.multiverseId + '&type=card'" />
     <ion-button fill="outline" (click)="presentCardCollections()">Choose Collection</ion-button>
   </div>
   <ion-fab *ngIf="plt.is('mobile')" vertical="bottom" horizontal="end" slot="fixed">

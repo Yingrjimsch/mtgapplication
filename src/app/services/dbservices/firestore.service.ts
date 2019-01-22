@@ -11,8 +11,8 @@ export class FirestoreService {
 
   constructor(private firestore: AngularFirestore) { }
 
-  getDecksByUserId(id: string) {
-    return this.firestore.collection('decks', q => q.where('userId', '==', id)).snapshotChanges().pipe(
+  getDecksByUserId(id: string, isArchive: boolean = false) {
+    return this.firestore.collection('decks', q => q.where('userId', '==', id).where('isArchive', '==', isArchive)).snapshotChanges().pipe(
       map(changes => changes.map(deck => ({ id: deck.payload.doc.id, ...deck.payload.doc.data() }))
       )
     );
@@ -33,6 +33,10 @@ export class FirestoreService {
     });
   }
 
+  updateDeck(deck: CardCollection) {
+    this.firestore.collection('decks').doc(deck.id).update(Object.assign({}, deck));
+  }
+
   deleteDeck(deckId: string) {
     this.firestore.collection('decks').doc(deckId).delete();
   }
@@ -43,7 +47,7 @@ export class FirestoreService {
     return this.firestore.firestore.runTransaction(async transaction => {
       const c = await transaction.get(cardRef);
       if (c.exists) {
-        card.numberOfCards++;
+        card.count++;
       }
       deck.numberOfCards++;
       transaction.update(deckRef, { numberOfCards: deck.numberOfCards });
@@ -56,7 +60,7 @@ export class FirestoreService {
     const cardRef = deckRef.collection('cards').doc(card.id);
     return this.firestore.firestore.runTransaction(async transaction => {
       const c = await transaction.get(cardRef);
-      if (c.data()['number'] <= card.numberOfCards) {
+      if (c.data()['number'] <= card.count) {
         deck.numberOfCards--;
       }
       transaction.update(deckRef, { numberOfCards: deck.numberOfCards });

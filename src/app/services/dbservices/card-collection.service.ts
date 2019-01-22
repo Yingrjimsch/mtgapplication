@@ -79,14 +79,14 @@ export class CardCollectionService {
 
   createCollection(cardCollection: CardCollection): void {
     this.cardCollectionsPath.add({
-      name: cardCollection.name,
+      name: cardCollection.deckName,
       numberOfCards: cardCollection.numberOfCards
     });
   }
 
   updateCollection(cardCollection: CardCollection): void {
     this.cardCollectionsPath.doc(cardCollection.id).update({
-      name: cardCollection.name,
+      name: cardCollection.deckName,
     });
     // cardCollection.cards.forEach(c => this.firestore.collection(this.cardCollectionsPath)
     // .doc(cardCollection.id).collection('cards').doc());

@@ -1,17 +1,18 @@
 export class Card {
-  constructor(name: string, multiverseId: string, imgPath: string) {
+  constructor(id: string, name: string, multiverseId: string) {
+    this.id = id;
     this.name = name;
     this.multiverseId = multiverseId;
-    this.imgPath = imgPath;
-    this.own = false;
-    this.foiled = false;
   }
 
   public id: string;
   public name: string;
   public multiverseId: string;
-  public imgPath: string;
-  public own: boolean;
-  public foiled: boolean;
-  public numberOfCards: number;
+  public foiled = false;
+  public count: number;
+
+  public translate(name: string, multiverseId: string): void {
+    this.name = name;
+    this.multiverseId = multiverseId;
+  }
 }

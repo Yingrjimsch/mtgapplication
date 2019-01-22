@@ -15,6 +15,7 @@ import { CardCollection } from '../../classes/card-collection';
 import { Settings } from '../../classes/settings';
 import { AlertInput, AlertButton } from '@ionic/core';
 import { CardService } from '../../services/dbservices/card.service';
+import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 
 @Component({
   selector: 'app-scanner',
@@ -35,6 +36,7 @@ export class ScannerPage implements OnInit {
     private settingsService: SettingsService,
     public plt: Platform,
     private cardCollectionService: CardCollectionService,
+    private firestoreService: FirestoreService,
     private cardService: CardService,
   ) {
     settingsService.getLanguage().then(a => {
@@ -44,7 +46,7 @@ export class ScannerPage implements OnInit {
   }
 
   takePhoto() {
-    // this.card = new Card('Angelic Rocket', '439528', 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=439528&type=card')
+    // this.card = new Card('Angelic Rocket', '439528')
     const options: CameraOptions = {
       quality: 100,
       targetHeight: 700,
@@ -74,10 +76,13 @@ export class ScannerPage implements OnInit {
 
   parseMTGServiceResponse(scannedCard: ScannedCard) {
     this.mtgService.getCard(scannedCard).toPromise().then(response => {
-      let c = response.json().cards[0];
+      const card = response.json().cards[0];
+      this.card = new Card(card.id, card.name, card.multiverseId);
       // Hier wird die Karte nach Sprache gesucht.
-      c = c.foreignNames.find(f => (f.language as string).toLowerCase() === this.settings.language.toLowerCase());
-      this.card = new Card(c.name, c.multiverseid, c.imageUrl);
+      const foreignCard = card.foreignNames.find(f => (f.language as string).toLowerCase() === this.settings.language.toLowerCase());
+      if (foreignCard) {
+        this.card.translate(foreignCard.name, foreignCard.multiverseId);
+      }
       this.toastService.presentSuccessToast('Card successfully found!');
     }).catch(() => this.toastService.presentErrorToast('Error while trying to find card'));
   }
@@ -96,9 +101,9 @@ export class ScannerPage implements OnInit {
       const header = 'Collections';
       const inputs: AlertInput[] = [];
       cardCollection.forEach(c => inputs.push({
-        name: c.name,
+        name: c.deckName,
         type: 'checkbox',
-        label: c.name,
+        label: c.deckName,
         value: c.id
       }));
       const buttons: AlertButton[] = [
@@ -112,7 +117,7 @@ export class ScannerPage implements OnInit {
         }, {
           text: 'Ok',
           handler: data => {
-            data.forEach(cc => this.cardCollectionService.addCardTOCollection2(cc, this.card));
+            data.forEach((deck: CardCollection) => this.firestoreService.addCardToDeck(deck, this.card));
             /*this.cardService.addCard(this.card)
               .then(v => {
                 this.card.id = v

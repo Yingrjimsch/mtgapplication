@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CardCollection } from 'src/app/classes/card-collection';
 import { ActionSheetButton } from '@ionic/core';
 import { ActionSheetService } from 'src/app/services/uiservices/action-sheet.service';
+import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
+import { Card } from 'src/app/classes/card';
 
 @Component({
   selector: 'app-card-list',
@@ -10,14 +12,16 @@ import { ActionSheetService } from 'src/app/services/uiservices/action-sheet.ser
 })
 export class CardListComponent implements OnInit {
 
-  @Input() public cardCollection: CardCollection;
-
-  constructor(public actionSheetService: ActionSheetService) { }
+  @Input() public deck: CardCollection;
+  public cards: Array<Card> = new Array();
+  constructor(public actionSheetService: ActionSheetService, public firestoreService: FirestoreService) {
+    firestoreService.getCardsByDeckId(this.deck.id).subscribe((cards: Card[]) => this.cards = cards);
+   }
 
   ngOnInit() {
   }
 
-  async presentActionSheet(item) {
+  async presentActionSheet(card: Card) {
     const header = 'Actions';
     const buttons: ActionSheetButton[] = [
       {
@@ -25,7 +29,7 @@ export class CardListComponent implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          this.cardCollection.cards.splice(this.cardCollection.cards.indexOf(item), 1);
+          this.firestoreService.removeCardsFromDeck(this.deck, card.id);
         }
       },
       {

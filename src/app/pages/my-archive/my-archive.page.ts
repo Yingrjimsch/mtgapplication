@@ -5,6 +5,7 @@ import { Card } from '../../classes/card';
 import { map } from 'rxjs/operators';
 import { ActionSheetService } from '../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
+import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 
 @Component({
   selector: 'app-my-archive',
@@ -14,15 +15,12 @@ import { ActionSheetButton } from '@ionic/core';
 export class MyArchivePage implements OnInit {
   public searchstring = '';
   public cards: Array<Card> = new Array<Card>();
-  constructor(public plt: Platform, cardService: CardService, private actionSheetService: ActionSheetService) {
-    cardService.getMyCards().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(a => ({ id: a.payload.doc.id, ...a.payload.doc.data() }))
-      )
-    ).subscribe((c: Card[]) => this.cards = c);
+
+  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private firestoreService: FirestoreService) {
+    firestoreService.getCardsByDeckId('vqG4oLttNyxtOmfgML58').subscribe((c: Card[]) => this.cards = c);
   }
 
-  getMyCards(): Card[] {
+  getMyCards(): Array<Card> {
     return this.cards.filter(c => c.name.toLowerCase().includes(this.searchstring.toLowerCase()));
   }
 

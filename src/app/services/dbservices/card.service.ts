@@ -20,8 +20,7 @@ export class CardService {
       return this.firestore.collection(this.cardPath).add({
         name: card.name,
         multiverseId: card.multiverseId,
-        imgPath: card.imgPath,
-        own: card.own,
+        imgPath: card.multiverseId,
         foiled: card.foiled
       }).then(ac => ac.id).catch(() => {throw 'Something went wrong while adding card.'});
     }).catch(() => {throw 'Something went wrong while checking for existing card.'});

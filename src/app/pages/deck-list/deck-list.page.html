@@ -22,8 +22,8 @@
     <ion-card-content>
       <ion-item lines="none">
         <ion-label>
-          <h1> {{collection.name}} </h1>
-          <p> {{collection.numberOfCards }} Cards</p>
+          <h1> {{collection.deckName}} </h1>
+          <p *ngIf="plt.is('mobile')"> {{collection.numberOfCards }} Cards</p>
         </ion-label>
         <ion-icon *ngIf="plt.is('mobile')" class="hoverItem marginTBRemoved" slot="end" size="large" color="dark"
           (click)="presentActionSheet(collection)" role="button" name="more">

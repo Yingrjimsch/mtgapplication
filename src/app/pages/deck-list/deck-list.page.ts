@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { CardCollection } from '../../classes/card-collection';
-import { CardCollectionService } from '../../services/dbservices/card-collection.service';
-import { map } from 'rxjs/operators';
 import { AlertService } from '../../services/uiservices/alert.service';
 import { ActionSheetService } from '../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
+import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 
 @Component({
   selector: 'app-deck-list',
@@ -17,13 +16,13 @@ export class DeckListPage implements OnInit {
   constructor(
     public plt: Platform,
     private actionSheetService: ActionSheetService,
-    public cardCollectionService: CardCollectionService,
+    public firestoreService: FirestoreService,
     private alertService: AlertService
   ) {
-    cardCollectionService.getAllCollectionsToSubscribe().subscribe((cc: CardCollection[]) => this.cardCollections = cc);
+    firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').subscribe((cc: CardCollection[]) => this.cardCollections = cc);
   }
 
-  async presentActionSheet(item) {
+  async presentActionSheet(deck: CardCollection) {
     const header = 'Actions';
     const buttons: ActionSheetButton[] = [
       {
@@ -31,8 +30,7 @@ export class DeckListPage implements OnInit {
         role: 'destructive',
         icon: 'trash',
         handler: () => {
-          this.cardCollectionService.deleteCardCollection(item.id);
-          this.cardCollections.splice(this.cardCollections.indexOf(item), 1);
+          this.firestoreService.deleteDeck(deck.id);
         }
       }, /*
         {
@@ -70,24 +68,23 @@ export class DeckListPage implements OnInit {
 
   async addCardCollection() {
     const inputs = [{
-      name: 'collectionName',
-      label: 'Collection Name',
+      name: 'deckName',
+      label: 'Deck Name',
       placeholder: 'Red Burn'
     }];
     const buttons = [
       {
         text: 'Cancel',
         role: 'cancel',
-        handler: data => {
+        handler: () => {
           console.log('Cancel clicked');
         }
       },
       {
         text: 'Create',
-        handler: data => {
-          if (data.collectionName) {
-            const cc = new CardCollection(data.collectionName);
-            this.cardCollectionService.createCollection(cc);
+        handler: (data: { deckName: string; }) => {
+          if (data.deckName) {
+            this.firestoreService.createDeck('5Y3LIYvotpzCBXpUcBIv', data.deckName);
           }
         }
       }

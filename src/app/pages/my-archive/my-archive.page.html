@@ -1,4 +1,4 @@
-/*<ion-header>
+<ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
@@ -15,7 +15,7 @@
         <ion-card class="cardWithImageAndText">
           <ion-item lines="none">
             <ion-title class="centeredText"
-              >{{ card.numberOfCards }}x</ion-title
+              >{{ card.count }}x</ion-title
             >
             <ion-icon
               (click)="presentActionSheet(card)"
@@ -28,7 +28,7 @@
               name="more"
             ></ion-icon>
           </ion-item>
-          <ion-card-content><img [src]="card.imgPath"/></ion-card-content>
+          <ion-card-content><img [src]="'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + card.multiverseId + '&type=card'"/></ion-card-content>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -36,11 +36,11 @@
   <ion-list *ngIf="plt.is('mobile')">
     <ion-item *ngFor="let card of getMyCards()">
       <ion-thumbnail slot="start">
-        <img [src]="card.imgPath" />
+        <img [src]="'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + card.multiverseId + '&type=card'" />
       </ion-thumbnail>
       <ion-label>
         <h2>{{ card.name }}</h2>
-        <p>{{ card.numberOfCards}}x</p>
+        <p>{{ card.count}}x</p>
       </ion-label>
       <ion-icon
         (click)="presentActionSheet(card)"
