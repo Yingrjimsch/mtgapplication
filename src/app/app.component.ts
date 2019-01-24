@@ -20,30 +20,30 @@ export class AppComponent {
     },
     {
       title: 'Deck List',
-      url: '/deck-list',
-      route: 'deck-list',
+      url: '/private/deck-list',
+      route: 'private/deck-list',
       icon: 'albums',
       visibility: 'private',
     },
     {
       title: 'Scann Cards',
-      url: '/scanner',
-      route: 'scanner',
+      url: '/private/scanner',
+      route: 'private/scanner',
       icon: 'qr-scanner',
       device: 'mobile',
       visibility: 'private'
     },
     {
       title: 'My Archive',
-      url: '/my-archive',
-      route: 'my-archive',
+      url: '/private/my-archive',
+      route: 'private/my-archive',
       icon: 'archive',
       visibility: 'private'
     },
     {
       title: 'Account',
-      url: '/account-settings',
-      route: 'account-settings',
+      url: '/private/account-settings',
+      route: 'private/account-settings',
       icon: 'person',
       visibility: 'private'
     }
