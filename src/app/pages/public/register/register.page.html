@@ -5,13 +5,19 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-item>
-    <ion-label position="floating">E-Mail</ion-label>
-    <ion-input></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Password</ion-label>
-    <ion-input type="password"></ion-input>
-  </ion-item>
-  <ion-button>Login</ion-button>
-</ion-content>
+    <form [formGroup]="registerForm" padding>
+        <ion-item>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input type="text" formControlName="email" required></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Password</ion-label>
+          <ion-input type="password" formControlName="password" required></ion-input>
+        </ion-item>
+        <ion-button 
+          color="primary" 
+          expand="block" 
+          [disabled]="!registerForm.valid" 
+          (click)="register()">Login</ion-button>
+    </form>
+  </ion-content>

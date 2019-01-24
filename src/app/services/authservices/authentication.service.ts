@@ -18,7 +18,13 @@ export class AuthenticationService {
 
   // NEEDED?
   checkUser() {
-    this.authentication.user.toPromise().then(() => this.authenticationState.next(true));
+    this.authentication.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.authenticationState.next(true);
+      } else {
+        this.authenticationState.next(false);
+      }
+    });
   }
 
   login(email: string, password: string) {

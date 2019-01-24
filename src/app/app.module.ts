@@ -20,6 +20,8 @@ import { environment } from '../environments/environment';
 import { CardListComponent } from './components/card-list/card-list.component';
 import { DeckDetailComponent } from './components/deck-detail/deck-detail.component';
 
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 @NgModule({
   declarations: [AppComponent, CardListComponent, DeckDetailComponent],
   entryComponents: [DeckDetailComponent],
@@ -31,7 +33,9 @@ import { DeckDetailComponent } from './components/deck-detail/deck-detail.compon
     HttpModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     StatusBar,
