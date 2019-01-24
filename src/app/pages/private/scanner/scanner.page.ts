@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import { GoogleCloudVisionService } from '../../services/httpservices/google-cloud-vision.service';
-import { AlertService } from '../../services/uiservices/alert.service';
-import { ScannedCard } from '../../classes/scanned-card';
+import { GoogleCloudVisionService } from '../../../services/httpservices/google-cloud-vision.service';
+import { AlertService } from '../../../services/uiservices/alert.service';
+import { ScannedCard } from '../../../classes/scanned-card';
 import { Platform } from '@ionic/angular';
-import { MagicTheGatheringService } from '../../services/httpservices/magic-the-gathering.service';
-import { Card } from '../../classes/card';
-import { ToastService } from '../../services/uiservices/toast.service';
-import { SettingsService } from '../../services/dbservices/settings.service';
-import { CardCollectionService } from '../../services/dbservices/card-collection.service';
+import { MagicTheGatheringService } from '../../../services/httpservices/magic-the-gathering.service';
+import { Card } from '../../../classes/card';
+import { ToastService } from '../../../services/uiservices/toast.service';
+import { SettingsService } from '../../../services/dbservices/settings.service';
+import { CardCollectionService } from '../../../services/dbservices/card-collection.service';
 import { map } from 'rxjs/operators';
-import { CardCollection } from '../../classes/card-collection';
-import { Settings } from '../../classes/settings';
+import { CardCollection } from '../../../classes/card-collection';
+import { Settings } from '../../../classes/settings';
 import { AlertInput, AlertButton } from '@ionic/core';
-import { CardService } from '../../services/dbservices/card.service';
+import { CardService } from '../../../services/dbservices/card.service';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 
 @Component({

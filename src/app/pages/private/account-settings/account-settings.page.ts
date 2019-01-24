@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from '../../services/dbservices/settings.service';
-import { Settings } from '../../classes/settings';
+import { SettingsService } from '../../../services/dbservices/settings.service';
+import { Settings } from '../../../classes/settings';
 import { first } from 'rxjs/operators';
 import { ToastService } from 'src/app/services/uiservices/toast.service';
 

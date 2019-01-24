@@ -17,40 +17,42 @@ export class AppComponent {
       url: '/home',
       route: 'home',
       icon: 'home',
-      device: 'all'
     },
     {
       title: 'Deck List',
       url: '/deck-list',
       route: 'deck-list',
       icon: 'albums',
-      device: 'all'
+      visibility: 'private',
     },
     {
       title: 'Scann Cards',
       url: '/scanner',
       route: 'scanner',
       icon: 'qr-scanner',
-      device: 'mobile'
+      device: 'mobile',
+      visibility: 'private'
     },
     {
       title: 'My Archive',
       url: '/my-archive',
       route: 'my-archive',
       icon: 'archive',
-      device: 'all'
+      visibility: 'private'
     },
     {
       title: 'Account',
       url: '/account-settings',
       route: 'account-settings',
       icon: 'person',
-      device: 'all'
+      visibility: 'private'
     }
   ];
 
-  getAppPagesByDevice(device: string, all: string = 'all') {
-    return this.appPages.filter(p => (p.device === device || p.device === all));
+  getAppPagesByDevice(device: string) {
+    const visibility = this.authenticationService.isAuthenticated() ? 'private' : 'public';
+    return this.appPages.filter(p => (p.device === device || p.device === undefined))
+    .filter(p => (p.visibility === visibility || p.visibility === undefined));
   }
 
   constructor(
@@ -58,7 +60,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private router: Router,
-    private authenticationService: AuthenticationService,
+    public authenticationService: AuthenticationService,
   ) {
     this.initializeApp();
   }
@@ -68,9 +70,11 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.authenticationService.authenticationState.subscribe(state =>
-        state ? this.router.navigate(['members', 'home']) : this.router.navigate(['login'])
+      // Right?
+      /*this.authenticationService.authenticationState.subscribe(state =>
+        state ? this.router.navigate(['private', 'home']) : this.router.navigate(['home'])
       );
+      */
     });
   }
 }

@@ -1,32 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuardService } from './services/authservices/auth-guard.service';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', loadChildren: './pages/home/home.module#HomePageModule' },
+  { path: 'login', loadChildren: './pages/public/login/login.module#LoginPageModule' },
+  { path: 'register', loadChildren: './pages/public/register/register.module#RegisterPageModule' },
   {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
+    path: 'private',
+    canActivate: [AuthGuardService],
+    loadChildren: './pages/private/private-routing.module#PrivateRoutingModule'
   },
-  {
-    path: 'home',
-    loadChildren: './pages/home/home.module#HomePageModule'
-  },
-  {
-    path: 'deck-list',
-    loadChildren: './pages//deck-list/deck-list.module#DeckListPageModule'
-  },
-  {
-    path: 'scanner',
-    loadChildren: './pages//scanner/scanner.module#ScannerPageModule'
-  },
-  {
-    path: 'my-archive',
-    loadChildren: './pages//my-archive/my-archive.module#MyArchivePageModule'
-  },
-  {
-    path: 'account-settings',
-    loadChildren: './pages//account-settings/account-settings.module#AccountSettingsPageModule'
-  }
+  // TODO: Create awesome 404 Page :D
+  { path: '**', redirectTo: 'home' },
 ];
 
 @NgModule({

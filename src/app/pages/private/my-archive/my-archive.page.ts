@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { CardService } from '../../services/dbservices/card.service';
-import { Card } from '../../classes/card';
+import { CardService } from '../../../services/dbservices/card.service';
+import { Card } from '../../../classes/card';
 import { map } from 'rxjs/operators';
-import { ActionSheetService } from '../../services/uiservices/action-sheet.service';
+import { ActionSheetService } from '../../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Platform, ModalController } from '@ionic/angular';
-import { CardCollection } from '../../classes/card-collection';
-import { AlertService } from '../../services/uiservices/alert.service';
-import { ActionSheetService } from '../../services/uiservices/action-sheet.service';
+import { CardCollection } from '../../../classes/card-collection';
+import { AlertService } from '../../../services/uiservices/alert.service';
+import { ActionSheetService } from '../../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 import { Router } from '@angular/router';
