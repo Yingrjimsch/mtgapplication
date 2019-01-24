@@ -46,6 +46,20 @@ export class AppComponent {
       route: 'private/account-settings',
       icon: 'person',
       visibility: 'private'
+    },
+    {
+      title: 'Register',
+      url: '/register',
+      route: 'register',
+      icon: 'person-add',
+      visibility: 'public'
+    },
+    {
+      title: 'Login',
+      url: '/login',
+      route: 'login',
+      icon: 'log-in',
+      visibility: 'public'
     }
   ];
 
@@ -70,11 +84,15 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      // Right?
+      // Right? --> I don't think so!
       /*this.authenticationService.authenticationState.subscribe(state =>
         state ? this.router.navigate(['private', 'home']) : this.router.navigate(['home'])
       );
       */
     });
+  }
+
+  logout() {
+    this.authenticationService.logout();
   }
 }

@@ -22,6 +22,10 @@
               <ion-label> {{ p.title }} </ion-label>
             </ion-item>
           </ion-menu-toggle>
+          <ion-button *ngIf="authenticationService.isAuthenticated()" 
+          (click)="logout()" 
+          color="primary" 
+          expand="block" >Logout</ion-button>
         </ion-list>
       </ion-content>
     </ion-menu>

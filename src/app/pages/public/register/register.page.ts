@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authservices/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,14 +11,19 @@ import { AuthenticationService } from 'src/app/services/authservices/authenticat
 export class RegisterPage implements OnInit {
 
   registerForm: FormGroup;
-  constructor(formBuilder: FormBuilder, private authenticationService: AuthenticationService) {
+  constructor(formBuilder: FormBuilder, private authenticationService: AuthenticationService,private router: Router) {
+    if (authenticationService.isAuthenticated()) {
+      router.navigate(['/home']);
+    }
     this.registerForm = formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
       password: ['', [Validators.minLength(6), Validators.required]]
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   register() {
     this.authenticationService.signup(this.registerForm.value.email, this.registerForm.value.password);

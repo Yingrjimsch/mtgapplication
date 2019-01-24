@@ -12,7 +12,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService],
     loadChildren: './pages/private/private-routing.module#PrivateRoutingModule'
   },
-  // TODO: Create awesome 404 Page :D
+  // TODO: Create an awesome 404 Page :D
   { path: '**', redirectTo: 'home' },
 ];
 

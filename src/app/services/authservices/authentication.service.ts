@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
 import { stringify } from '@angular/core/src/util';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { stringify } from '@angular/core/src/util';
 export class AuthenticationService {
   authenticationState = new BehaviorSubject(false);
 
-  constructor(private storage: Storage, private plt: Platform, private authentication: AngularFireAuth) {
+  constructor(private storage: Storage, private plt: Platform, private authentication: AngularFireAuth, private router: Router) {
     this.plt.ready().then(() => this.checkUser());
   }
 
@@ -27,22 +28,23 @@ export class AuthenticationService {
     });
   }
 
-  login(email: string, password: string) {
-    this.authentication.auth.signInWithEmailAndPassword(email, password).then(credentials => {
-      console.log(credentials.user);
+  async login(email: string, password: string) {
+    return this.authentication.auth.signInWithEmailAndPassword(email, password).then(credentials => {
+      this.router.navigate(['/home']);
       this.authenticationState.next(true);
     });
   }
 
   logout() {
     this.authentication.auth.signOut().then(() => {
+      this.router.navigate(['/home']);
       this.authenticationState.next(false);
     });
   }
 
   signup(email: string, password: string) {
     this.authentication.auth.createUserWithEmailAndPassword(email, password).then(credentials => {
-      console.log(credentials.user);
+      this.router.navigate(['/home']);
       this.authenticationState.next(true);
     });
   }
