@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicStorageModule } from '@ionic/storage'
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -17,13 +18,15 @@ import { AngularFirestoreModule  } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
 import { CardListComponent } from './components/card-list/card-list.component';
+import { DeckDetailComponent } from './components/deck-detail/deck-detail.component';
 
 @NgModule({
-  declarations: [AppComponent, CardListComponent],
-  entryComponents: [],
+  declarations: [AppComponent, CardListComponent, DeckDetailComponent],
+  entryComponents: [DeckDetailComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
     HttpModule,
     AngularFireModule.initializeApp(environment.firebase),

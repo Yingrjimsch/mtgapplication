@@ -10,15 +10,16 @@ import { Card } from 'src/app/classes/card';
   templateUrl: './card-list.component.html',
   styleUrls: ['./card-list.component.scss']
 })
-export class CardListComponent implements OnInit {
-
+export class CardListComponent {
   @Input() public deck: CardCollection;
   public cards: Array<Card> = new Array();
-  constructor(public actionSheetService: ActionSheetService, public firestoreService: FirestoreService) {
-    firestoreService.getCardsByDeckId(this.deck.id).subscribe((cards: Card[]) => this.cards = cards);
-   }
-
-  ngOnInit() {
+  constructor(
+    public actionSheetService: ActionSheetService,
+    public firestoreService: FirestoreService
+  ) {
+    firestoreService
+      .getCardsByDeckId(this.deck.id)
+      .subscribe((cards: Card[]) => (this.cards = cards));
   }
 
   async presentActionSheet(card: Card) {
@@ -50,5 +51,4 @@ export class CardListComponent implements OnInit {
     ];
     this.actionSheetService.presentCustomActionSheet(header, buttons);
   }
-
 }

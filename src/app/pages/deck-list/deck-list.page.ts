@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { CardCollection } from '../../classes/card-collection';
 import { AlertService } from '../../services/uiservices/alert.service';
 import { ActionSheetService } from '../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { DeckDetailComponent } from 'src/app/components/deck-detail/deck-detail.component';
 
 @Component({
   selector: 'app-deck-list',
@@ -20,7 +20,8 @@ export class DeckListPage implements OnInit {
     private actionSheetService: ActionSheetService,
     public firestoreService: FirestoreService,
     public router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private modalController: ModalController
   ) {
     firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').subscribe(decks => this.cardCollections = decks);
   }
@@ -95,8 +96,15 @@ export class DeckListPage implements OnInit {
     this.alertService.presentCustomAlert('New Card Collection', inputs, buttons);
   }
 
-  openDeckDetail(deck: CardCollection) {
-    this.router.navigate(['/deckDetail', deck.id]);
+  async openDeckDetail() {
+    const data = { message : 'hello world' };
+
+    const modalPage = await this.modalController.create({
+      component: DeckDetailComponent,
+      componentProps: {values: data}
+    });
+
+    return await modalPage.present();
   }
 
   ngOnInit() { }
