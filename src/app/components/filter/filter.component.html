@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="centeredText"> Filter </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="applyFilter()">Apply</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngFor="let color of colors">
+          <ion-icon (click)="selectFilter(this.cardFilter.colors, color)" class="filterIcon"
+            [ngClass]="{'activeFilterIcon' : cardFilter.colors.includes(color)}"
+            [src]="'assets/icons/' + color + 'manasymbol.svg'"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+    <ion-item>
+      <p>
+        <ion-chip *ngFor="let cardType of cardTypes" (click)="selectFilter(this.cardFilter.cardTypes, cardType)"
+          outline>
+          <ion-label>{{cardType | titlecase}}</ion-label>
+        </ion-chip>
+      </p>
+    </ion-item>
+    <ion-item>
+      <p>
+        <ion-chip *ngFor="let rarity of rarities" (click)="selectFilter(this.cardFilter.rarities, rarity)" outline>
+          <ion-icon name="radio-button-on" [class]="rarity"></ion-icon>
+          <ion-label>{{rarity | titlecase}}</ion-label>
+        </ion-chip>
+      </p>
+    </ion-item>
+    <ion-item>
+      <ion-row>
+        <ion-col *ngFor="let manaCost of manaCosts">
+          <ion-icon (click)="selectFilter(this.cardFilter.manaCosts, manaCost)" class="filterIcon"
+            [ngClass]="{'activeFilterIcon' : cardFilter.manaCosts.includes(manaCost)}"
+            [src]="'assets/icons/' + manaCost + 'manasymbol.svg'"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-grid>
+</ion-content>

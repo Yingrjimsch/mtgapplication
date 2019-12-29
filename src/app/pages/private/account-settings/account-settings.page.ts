@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsService } from '../../../services/dbservices/settings.service';
 import { Settings } from '../../../classes/settings';
 import { first } from 'rxjs/operators';
 import { ToastService } from 'src/app/services/uiservices/toast.service';
+import { UserService } from 'src/app/services/dbservices/user.service';
+import { MtgUser } from 'src/app/classes/mtg-user';
 
 @Component({
   selector: 'app-account-settings',
@@ -10,15 +11,17 @@ import { ToastService } from 'src/app/services/uiservices/toast.service';
   styleUrls: ['./account-settings.page.scss'],
 })
 export class AccountSettingsPage implements OnInit {
-  public settings: Settings = new Settings();
-  constructor(private settingsService: SettingsService, private toastService: ToastService) {
-    settingsService.getLanguage().then(a => {
-      this.settings = a.docs.map(a => ({ id: a.id, ...a.data() }) as Settings)[0];
-    }).catch(err => toastService.presentErrorToast('Could not find Settings.'));
-  }
+  public mtgUser: MtgUser = new MtgUser();
+  constructor(private toastService: ToastService, private userService: UserService) {
+    userService.getUser().then(user => {
+      console.log(user.data());
+      this.mtgUser = (user.data() as MtgUser);
+      console.log(this.mtgUser);
+    }).catch(err => toastService.presentErrorToast('Could not find Loggedin User.'));
+    }
 
   languageChange() {
-    this.settingsService.setLanguage(this.settings.language);
+    this.userService.updateUserLanguage(this.mtgUser.language);
   }
   ngOnInit() {
   }

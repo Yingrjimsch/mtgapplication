@@ -1,0 +1,39 @@
+ion-grid {
+  height: 100%;
+}
+ion-row {
+  height: 100%;
+  width: 100%;
+}
+ion-item {
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+p {
+  text-align: center;
+  width: 100%;
+}
+ion-chip {
+  cursor: pointer !important;
+}
+.filterIcon {
+  width: 80%;
+  height: 80%;
+  opacity: 0.5;
+  cursor: pointer !important;
+}
+.activeFilterIcon {
+  opacity: 1;
+}
+.common {
+  color: #1a1718;
+}
+.uncommon {
+  color: #707883;
+}
+.rare {
+  color: #a58e4a;
+}
+.mythic {
+  color: #bf4427;
+}

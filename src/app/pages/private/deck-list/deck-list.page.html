@@ -9,6 +9,7 @@
 
 <ion-content padding>
   <ion-card *ngFor="let collection of cardCollections">
+    <!-- Desktop Kompabilität wird im Moment ausgeschlossen -->
     <ion-item lines="none" *ngIf="!plt.is('mobile')">
       <ion-chip color="danger" outline="true">
         <ion-label>{{collection.numberOfCards}} Cards</ion-label>
@@ -19,9 +20,9 @@
       <ion-icon class="hoverItem marginTBRemoved" (click)="presentActionSheet(collection)" fill="clear" slot="end" size="large"
         color="dark" role="button" name="more"></ion-icon>
     </ion-item>
-    <ion-card-content (click)="openDeckDetail(collection)">
+    <ion-card-content>
       <ion-item lines="none">
-        <ion-label>
+        <ion-label (click)="openDeckDetail(collection.id)">
           <h1> {{collection.deckName}} </h1>
           <p *ngIf="plt.is('mobile')"> {{collection.numberOfCards }} Cards</p>
         </ion-label>

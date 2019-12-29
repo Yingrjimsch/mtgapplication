@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 @Component({
@@ -7,10 +7,11 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./deck-detail.component.scss']
 })
 export class DeckDetailComponent implements OnInit {
-
+  @Input() collectionId: string;
   constructor(private modalController: ModalController) { }
 
   ngOnInit() {
+    
   }
 
   public closeDeckDetail() {

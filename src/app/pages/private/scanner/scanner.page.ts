@@ -8,7 +8,6 @@ import { Platform } from '@ionic/angular';
 import { MagicTheGatheringService } from '../../../services/httpservices/magic-the-gathering.service';
 import { Card } from '../../../classes/card';
 import { ToastService } from '../../../services/uiservices/toast.service';
-import { SettingsService } from '../../../services/dbservices/settings.service';
 import { CardCollectionService } from '../../../services/dbservices/card-collection.service';
 import { map } from 'rxjs/operators';
 import { CardCollection } from '../../../classes/card-collection';
@@ -16,6 +15,8 @@ import { Settings } from '../../../classes/settings';
 import { AlertInput, AlertButton } from '@ionic/core';
 import { CardService } from '../../../services/dbservices/card.service';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
+import { UserService } from 'src/app/services/dbservices/user.service';
+import { MtgUser } from 'src/app/classes/mtg-user';
 
 @Component({
   selector: 'app-scanner',
@@ -25,7 +26,7 @@ import { FirestoreService } from 'src/app/services/dbservices/firestore.service'
 export class ScannerPage implements OnInit {
 
   public card: Card;
-  private settings: Settings = new Settings();
+  private mtgUser: MtgUser = new MtgUser();
 
   constructor(
     private camera: Camera,
@@ -33,16 +34,16 @@ export class ScannerPage implements OnInit {
     private alertService: AlertService,
     private mtgService: MagicTheGatheringService,
     private toastService: ToastService,
-    private settingsService: SettingsService,
+    private userService: UserService,
     public plt: Platform,
     private cardCollectionService: CardCollectionService,
     private firestoreService: FirestoreService,
-    private cardService: CardService,
+    private cardService: CardService
   ) {
-    settingsService.getLanguage().then(a => {
-      this.settings = a.docs.map(a => ({ id: a.id, ...a.data() }) as Settings)[0];
+    userService.getUser().then(user => {
+      this.mtgUser = (user.data() as MtgUser);
       this.takePhoto();
-    }).catch(() => toastService.presentErrorToast('Could not find Settings.'));
+    }).catch(err => toastService.presentErrorToast('Could not find Loggedin User.'));
   }
 
   takePhoto() {
@@ -79,7 +80,7 @@ export class ScannerPage implements OnInit {
       const card = response.json().cards[0];
       this.card = new Card(card.id, card.name, card.multiverseId);
       // Hier wird die Karte nach Sprache gesucht.
-      const foreignCard = card.foreignNames.find(f => (f.language as string).toLowerCase() === this.settings.language.toLowerCase());
+      const foreignCard = card.foreignNames.find(f => (f.language as string).toLowerCase() === this.mtgUser.language.toLowerCase());
       if (foreignCard) {
         this.card.translate(foreignCard.name, foreignCard.multiverseId);
       }

@@ -14,6 +14,7 @@ export class LoginPage implements OnInit {
   constructor(formBuilder: FormBuilder, private authenticationService: AuthenticationService,private router: Router) {
     if (authenticationService.isAuthenticated()) {
       router.navigate(['/home']);
+      console.log(authenticationService.isAuthenticated())
     }
     this.loginForm = formBuilder.group({
       email: ['', [Validators.email, Validators.required]],

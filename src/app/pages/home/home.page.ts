@@ -5,7 +5,6 @@ import { CardCollectionService } from '../../services/dbservices/card-collection
 import { CardCollection } from '../../classes/card-collection';
 import { map } from 'rxjs/operators';
 import { CardService } from '../../services/dbservices/card.service';
-import { SettingsService } from '../../services/dbservices/settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 import { Languages } from 'src/app/enums/languages';

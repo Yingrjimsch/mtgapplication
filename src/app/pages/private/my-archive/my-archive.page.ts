@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, ModalController } from '@ionic/angular';
 import { CardService } from '../../../services/dbservices/card.service';
 import { Card } from '../../../classes/card';
 import { map } from 'rxjs/operators';
 import { ActionSheetService } from '../../../services/uiservices/action-sheet.service';
 import { ActionSheetButton } from '@ionic/core';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
+import { FilterComponent } from 'src/app/components/filter/filter.component';
 
 @Component({
   selector: 'app-my-archive',
@@ -15,8 +16,9 @@ import { FirestoreService } from 'src/app/services/dbservices/firestore.service'
 export class MyArchivePage implements OnInit {
   public searchstring = '';
   public cards: Array<Card> = new Array<Card>();
+  private filter; // TODO Filter erstellen!
 
-  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private firestoreService: FirestoreService) {
+  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private firestoreService: FirestoreService, private modalController: ModalController) {
     firestoreService.getCardsByDeckId('vqG4oLttNyxtOmfgML58').subscribe((c: Card[]) => this.cards = c);
   }
 
@@ -24,6 +26,14 @@ export class MyArchivePage implements OnInit {
     return this.cards.filter(c => c.name.toLowerCase().includes(this.searchstring.toLowerCase()));
   }
 
+  async openFilter() {
+    const modalPage = await this.modalController.create({
+      component: FilterComponent,
+      componentProps: {filter: this.filter}
+    });
+
+    return await modalPage.present();
+  }
   ngOnInit() {
   }
 }

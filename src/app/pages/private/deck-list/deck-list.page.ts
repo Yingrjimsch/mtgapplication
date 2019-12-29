@@ -96,12 +96,10 @@ export class DeckListPage implements OnInit {
     this.alertService.presentCustomAlert('New Card Collection', inputs, buttons);
   }
 
-  async openDeckDetail() {
-    const data = { message : 'hello world' };
-
+  async openDeckDetail(collectionId: string) {
     const modalPage = await this.modalController.create({
       component: DeckDetailComponent,
-      componentProps: {values: data}
+      componentProps: {collectionId: collectionId}
     });
 
     return await modalPage.present();

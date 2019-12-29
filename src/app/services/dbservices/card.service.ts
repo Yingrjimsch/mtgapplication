@@ -4,11 +4,14 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from 
 import { map } from 'rxjs/operators';
 import { CachedResourceLoader } from '@angular/platform-browser-dynamic/src/resource_loader/resource_loader_cache';
 import { Observable } from 'rxjs';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CardService {
+
   cardPath = 'cards';
   constructor(private firestore: AngularFirestore) { }
 

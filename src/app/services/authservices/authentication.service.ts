@@ -6,6 +6,8 @@ import { AngularFireAuthModule, AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase';
 import { stringify } from '@angular/core/src/util';
 import { Router } from '@angular/router';
+import { UserService } from '../dbservices/user.service';
+import { MtgUser } from 'src/app/classes/mtg-user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +15,7 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   authenticationState = new BehaviorSubject(false);
 
-  constructor(private storage: Storage, private plt: Platform, private authentication: AngularFireAuth, private router: Router) {
+  constructor(private storage: Storage, private plt: Platform, private authentication: AngularFireAuth, private router: Router, private userService: UserService) {
     this.plt.ready().then(() => this.checkUser());
   }
 
@@ -43,7 +45,9 @@ export class AuthenticationService {
   }
 
   signup(email: string, password: string) {
-    this.authentication.auth.createUserWithEmailAndPassword(email, password).then(credentials => {
+    this.authentication.auth.createUserWithEmailAndPassword(email, password).then(data => {
+      this.userService.addUser(data.user.uid, data.user.email);
+      console.log(this.authentication.auth.currentUser);
       this.router.navigate(['/home']);
       this.authenticationState.next(true);
     });
