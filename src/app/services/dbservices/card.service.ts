@@ -11,16 +11,16 @@ import { UserService } from './user.service';
   providedIn: 'root'
 })
 export class CardService {
-
-  cardPath = 'cards';
-  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth) { }
+  
+  cardCollection = 'cards';
+  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private userService: UserService) { }
 
   async addCard(card: Card) {
     return this.checkForExistingCard(card.multiverseId).then(c => {
       if (c.size !== 0) {
         return c.docs[0].id;
       }
-      return this.firestore.collection(this.cardPath).add({
+      return this.firestore.collection(this.cardCollection).add({
         name: card.name,
         multiverseId: card.multiverseId,
         imgPath: card.multiverseId,
@@ -30,27 +30,31 @@ export class CardService {
   }
 
   checkForExistingCard(multiverseId: string) {
-    return this.firestore.collection(this.cardPath, q => q.where('multiverseId', '==', multiverseId)).get().toPromise();
-  }
-
-  // Not used
-  getCardById(cardId: string) {
-    return this.firestore.collection(this.cardPath).snapshotChanges().pipe(
-      map(changes =>
-        changes.map(a => ({ id: a.payload.doc.id, ...a.payload.doc.data() }))
-      )
-    ).toPromise();
+    return this.firestore.collection(this.cardCollection, q => q.where('multiverseId', '==', multiverseId)).get().toPromise();
   }
 
   getCardById2(cardId: string) {
-    return this.firestore.collection(this.cardPath).doc(cardId);
+    return this.firestore.collection(this.cardCollection).doc(cardId);
   }
 
   getMyCards(): AngularFirestoreCollection<Card> {
-    return this.firestore.collection(this.cardPath, ref => ref.where('own', '==', true));
+    return this.firestore.collection(this.cardCollection, ref => ref.where('own', '==', true));
+  }
+
+  public getCardCollectionDoc() {
+    return this.userService.getUserDoc().collection(this.cardCollection);
   }
 
   getCardCollectionOfLoggedInUser() {
-    return this.firestore.collection('users').doc(this.authentication.auth.currentUser.uid).collection('cards').get().toPromise();
+    return this.getCardCollectionDoc().get().toPromise();
+  }
+
+  public deleteCardFromCollection(id: string) {
+   console.log(id); 
+   return this.getCardCollectionDoc().doc(id).delete();
+  }
+
+  updateCard(card: Card) {
+    return this.getCardCollectionDoc().doc(card.id).update(card);
   }
 }

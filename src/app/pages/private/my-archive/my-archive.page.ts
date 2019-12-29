@@ -40,7 +40,39 @@ export class MyArchivePage implements OnInit {
     const { data } = await modalPage.onWillDismiss();
     this.cardFilter = data.cardFilter;
   }
-  
+
+  async presentActionSheet(card: Card) {
+    const header = 'Actions';
+    const buttons: ActionSheetButton[] = [
+      {
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+        handler: () => {
+          console.log(this.cards);
+          console.log(this.cards.indexOf(card));
+          this.cards.splice(this.cards.indexOf(card), 1);
+          this.cardService.deleteCardFromCollection(card.id);
+        }
+      }, 
+        {
+          text: 'Add One',
+          icon: 'arrow-round-up',
+          handler: () => {
+            card.count++;
+            this.cardService.updateCard(card)
+          }
+        },
+      {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => { }
+      }
+    ];
+    this.actionSheetService.presentCustomActionSheet(header, buttons);
+  }
+
   ngOnInit() {
   }
 }

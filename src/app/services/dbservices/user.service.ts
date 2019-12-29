@@ -19,14 +19,18 @@ export class UserService {
     
   }
 
+  public getUserDoc() {
+    return this.firestore.collection(this.userCollection).doc(this.authentication.auth.currentUser.uid);
+  }
+
   /* Benutzer kann ausgelesen werden um Attribute zu lesen. */
-  getUser() {
-    return this.firestore.collection(this.userCollection).doc(this.authentication.auth.currentUser.uid).get().toPromise();
+  public getUser() {
+    return this.getUserDoc().get().toPromise();
   }
 
   /* Die gewünschte Sprache des Benutzers wird ausgelesen. */
-  updateUserLanguage(language: string) {
-    this.firestore.collection(this.userCollection).doc(this.authentication.auth.currentUser.uid).update({ language: language});
+  public updateUserLanguage(language: string) {
+    return this.getUserDoc().update({ language: language});
   }
 
   
