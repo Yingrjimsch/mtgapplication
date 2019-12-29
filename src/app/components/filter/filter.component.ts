@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CardFilter } from 'src/app/classes/card-filter';
 
@@ -12,12 +12,12 @@ export class FilterComponent implements OnInit {
   readonly cardTypes = ['creature', 'planeswalker', 'instant', 'sorcery', 'enchantment', 'artifact', 'land'];
   readonly rarities = ['common', 'uncommon', 'rare', 'mythic'];
   readonly manaCosts = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
-  public cardFilter = new CardFilter();
+  @Input() cardFilter: CardFilter;
   constructor(private modalController: ModalController) { }
 
   public applyFilter() {
     this.modalController.dismiss({
-      'dismissed': true
+      'cardFilter' : this.cardFilter
     });
   }
   ngOnInit() {

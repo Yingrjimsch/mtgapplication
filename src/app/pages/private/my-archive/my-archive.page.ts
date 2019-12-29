@@ -7,6 +7,7 @@ import { ActionSheetService } from '../../../services/uiservices/action-sheet.se
 import { ActionSheetButton } from '@ionic/core';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 import { FilterComponent } from 'src/app/components/filter/filter.component';
+import { CardFilter } from 'src/app/classes/card-filter';
 
 @Component({
   selector: 'app-my-archive',
@@ -16,24 +17,30 @@ import { FilterComponent } from 'src/app/components/filter/filter.component';
 export class MyArchivePage implements OnInit {
   public searchstring = '';
   public cards: Array<Card> = new Array<Card>();
-  private filter; // TODO Filter erstellen!
+  private cardFilter = new CardFilter();
 
-  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private firestoreService: FirestoreService, private modalController: ModalController) {
-    firestoreService.getCardsByDeckId('vqG4oLttNyxtOmfgML58').subscribe((c: Card[]) => this.cards = c);
+  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private cardService: CardService, private modalController: ModalController) {
+    this.cardService.getCardCollectionOfLoggedInUser().then(cards => cards.forEach(c => this.cards.push(c.data() as Card)));
   }
 
   getMyCards(): Array<Card> {
-    return this.cards.filter(c => c.name.toLowerCase().includes(this.searchstring.toLowerCase()));
+    return this.cards.filter(c => c.name.toLowerCase().includes(this.searchstring.toLowerCase())
+      && this.cardFilter.cardTypes.includes(c.cardType)
+      && c.colors.every((c2: string) => this.cardFilter.colors.includes(c2))
+      && this.cardFilter.manaCosts.includes(c.manaCost)
+      && this.cardFilter.rarities.includes(c.rarity));
   }
 
   async openFilter() {
     const modalPage = await this.modalController.create({
       component: FilterComponent,
-      componentProps: {filter: this.filter}
+      componentProps: { cardFilter: this.cardFilter }
     });
-
-    return await modalPage.present();
+    await modalPage.present();
+    const { data } = await modalPage.onWillDismiss();
+    this.cardFilter = data.cardFilter;
   }
+  
   ngOnInit() {
   }
 }

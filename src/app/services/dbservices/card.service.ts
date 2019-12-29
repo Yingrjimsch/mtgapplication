@@ -13,7 +13,7 @@ import { UserService } from './user.service';
 export class CardService {
 
   cardPath = 'cards';
-  constructor(private firestore: AngularFirestore) { }
+  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth) { }
 
   async addCard(card: Card) {
     return this.checkForExistingCard(card.multiverseId).then(c => {
@@ -48,5 +48,9 @@ export class CardService {
 
   getMyCards(): AngularFirestoreCollection<Card> {
     return this.firestore.collection(this.cardPath, ref => ref.where('own', '==', true));
+  }
+
+  getCardCollectionOfLoggedInUser() {
+    return this.firestore.collection('users').doc(this.authentication.auth.currentUser.uid).collection('cards').get().toPromise();
   }
 }
