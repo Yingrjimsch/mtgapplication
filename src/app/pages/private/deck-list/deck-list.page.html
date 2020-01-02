@@ -8,32 +8,32 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngFor="let collection of cardCollections">
+  <ion-card *ngFor="let deck of decks">
     <!-- Desktop Kompabilität wird im Moment ausgeschlossen -->
     <ion-item lines="none" *ngIf="!plt.is('mobile')">
       <ion-chip color="danger" outline="true">
-        <ion-label>{{collection.numberOfCards}} Cards</ion-label>
+        <ion-label>{{deck.numberOfCards}} Cards</ion-label>
       </ion-chip>
       <ion-chip>
         <ion-label>~ 40 CHF</ion-label>
       </ion-chip>
-      <ion-icon class="hoverItem marginTBRemoved" (click)="presentActionSheet(collection)" fill="clear" slot="end" size="large"
+      <ion-icon class="hoverItem marginTBRemoved" (click)="presentActionSheet(deck)" fill="clear" slot="end" size="large"
         color="dark" role="button" name="more"></ion-icon>
     </ion-item>
     <ion-card-content>
       <ion-item lines="none">
-        <ion-label (click)="openDeckDetail(collection.id)">
-          <h1> {{collection.deckName}} </h1>
-          <p *ngIf="plt.is('mobile')"> {{collection.numberOfCards }} Cards</p>
+        <ion-label (click)="openDeckDetail(deck.id)">
+          <h1> {{deck.deckName}} </h1>
+          <p *ngIf="plt.is('mobile')"> {{deck.numberOfCards }} Cards</p>
         </ion-label>
         <ion-icon *ngIf="plt.is('mobile')" class="hoverItem marginTBRemoved" slot="end" size="large" color="dark"
-          (click)="presentActionSheet(collection)" role="button" name="more">
+          (click)="presentActionSheet(deck)" role="button" name="more">
         </ion-icon>
       </ion-item>
     </ion-card-content>
   </ion-card>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addCardCollection()">
+    <ion-fab-button (click)="addDeck()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

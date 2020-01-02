@@ -100,6 +100,7 @@ export class MyArchivePage implements OnInit {
   }
   
   private deleteCardFromCollection(card: Card) {
+    //TODO first delete in db and then delete on UI
     this.cards.splice(this.cards.indexOf(card), 1);
     this.cardService.deleteCardFromCollection(card.id);
   }
@@ -119,6 +120,9 @@ export class MyArchivePage implements OnInit {
       {
         text: 'Add',
         handler: (data: { cardName: string; }) => {
+          if(!data.cardName) {
+            return;
+          }
           this.loadingService.present('Search Card...');
           this.mtgService.getCardByName(data.cardName)
             .then(c => {

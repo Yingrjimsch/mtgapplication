@@ -12,7 +12,7 @@ import { UserService } from './user.service';
 })
 export class CardService {
   
-  cardCollection = 'cards';
+  readonly cardCollection = 'cards';
   constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private userService: UserService) { }
 
   async addCard(card: Card) {
