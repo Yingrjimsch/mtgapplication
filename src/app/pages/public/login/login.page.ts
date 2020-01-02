@@ -12,9 +12,10 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
 export class LoginPage implements OnInit {
   loginForm: FormGroup;
   constructor(formBuilder: FormBuilder, private authenticationService: AuthenticationService,private router: Router) {
-    if (authenticationService.isAuthenticated()) {
+    //if (authenticationService.isAuthenticated()) {
+    if (authenticationService.authenticated) {
       router.navigate(['/home']);
-      console.log(authenticationService.isAuthenticated())
+      console.log(authenticationService.authenticated);
     }
     this.loginForm = formBuilder.group({
       email: ['', [Validators.email, Validators.required]],

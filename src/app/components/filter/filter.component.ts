@@ -9,9 +9,9 @@ import { CardFilter } from 'src/app/classes/card-filter';
 })
 export class FilterComponent implements OnInit {
   readonly colors = ['white', 'blue', 'green', 'red', 'black'];
-  readonly cardTypes = ['creature', 'planeswalker', 'instant', 'sorcery', 'enchantment', 'artifact', 'land'];
+  readonly types = ['creature', 'planeswalker', 'instant', 'sorcery', 'enchantment', 'artifact', 'land'];
   readonly rarities = ['common', 'uncommon', 'rare', 'mythic'];
-  readonly manaCosts = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
+  readonly cmcs = ['0', '1', '2', '3', '4', '5', '6', '7+'];
   @Input() cardFilter: CardFilter;
   constructor(private modalController: ModalController) { }
 
@@ -29,5 +29,9 @@ export class FilterComponent implements OnInit {
 
   deleteFilter(list, value: string) {
     list.splice(value, 1)
+  }
+
+  public resetFilter() {
+    this.cardFilter = new CardFilter();
   }
 }

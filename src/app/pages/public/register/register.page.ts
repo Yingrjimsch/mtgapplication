@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/services/authservices/authentication.service';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/dbservices/user.service';
 
 @Component({
   selector: 'app-register',
@@ -11,9 +12,10 @@ import { Router } from '@angular/router';
 export class RegisterPage implements OnInit {
 
   registerForm: FormGroup;
-  constructor(formBuilder: FormBuilder, private authenticationService: AuthenticationService,private router: Router) {
-    if (authenticationService.isAuthenticated()) {
-      router.navigate(['/home']);
+  constructor(formBuilder: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService, private router: Router) {
+    //if (authenticationService.isAuthenticated()) {
+    if (authenticationService.authenticated) {
+    router.navigate(['/home']);
     }
     this.registerForm = formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
@@ -26,6 +28,10 @@ export class RegisterPage implements OnInit {
   }
 
   register() {
-    this.authenticationService.signup(this.registerForm.value.email, this.registerForm.value.password);
+    this.userService.addUser(this.registerForm.value.email, this.registerForm.value.password);
+  }
+
+  showLoginPage() {
+    return this.router.navigate(['/login']);
   }
 }

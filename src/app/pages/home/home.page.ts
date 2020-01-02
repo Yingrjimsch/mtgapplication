@@ -17,14 +17,14 @@ import { Languages } from 'src/app/enums/languages';
 export class HomePage {
 
   constructor(private c: FirestoreService, private c3: CardService) {
-    const card: Card = new Card('test', 'xnxx', 'path');
+    /*const card: Card = new Card('test', 'xnxx', 'path');
     card.id = '09987';
     const deck: CardCollection = new CardCollection('TestDeck');
     deck.id = 'JdT5KwAyo5Jd8OqRUDit';
     deck.numberOfCards = 0;
-    c.addCardToDeck(deck, card);
+    c.addCardToDeck(deck, card);*/
     console.log(Languages['en']);
     // c.getCardsByDeckId('JdT5KwAyo5Jd8OqRUDit').subscribe(l => console.log(l))
-    c.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').toPromise().then(decks => decks.forEach((d: CardCollection) => console.log(d)));
+    //c.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').toPromise().then(decks => decks.forEach((d: CardCollection) => console.log(d)));
   }
 }

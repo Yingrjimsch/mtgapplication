@@ -78,7 +78,7 @@ export class ScannerPage implements OnInit {
   parseMTGServiceResponse(scannedCard: ScannedCard) {
     this.mtgService.getCard(scannedCard).toPromise().then(response => {
       const card = response.json().cards[0];
-      this.card = new Card(card.id, card.name, card.multiverseId);
+      this.card = new Card(card.id, card.name, card.multiverseId, card.rarity, card.colors, card.cmc, card.types);
       // Hier wird die Karte nach Sprache gesucht.
       const foreignCard = card.foreignNames.find(f => (f.language as string).toLowerCase() === this.mtgUser.language.toLowerCase());
       if (foreignCard) {

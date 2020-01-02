@@ -19,9 +19,9 @@
     </ion-item>
     <ion-item>
       <p>
-        <ion-chip *ngFor="let cardType of cardTypes" (click)="selectFilter(this.cardFilter.cardTypes, cardType)"
+        <ion-chip *ngFor="let type of types" (click)="selectFilter(this.cardFilter.types, type)"
           outline>
-          <ion-label>{{cardType | titlecase}}</ion-label>
+          <ion-label>{{type | titlecase}}</ion-label>
         </ion-chip>
       </p>
     </ion-item>
@@ -35,12 +35,13 @@
     </ion-item>
     <ion-item>
       <ion-row>
-        <ion-col *ngFor="let manaCost of manaCosts">
-          <ion-icon (click)="selectFilter(this.cardFilter.manaCosts, manaCost)" class="filterIcon"
-            [ngClass]="{'activeFilterIcon' : cardFilter.manaCosts.includes(manaCost)}"
-            [src]="'assets/icons/' + manaCost + 'manasymbol.svg'"></ion-icon>
+        <ion-col *ngFor="let cmc of cmcs">
+          <ion-icon (click)="selectFilter(this.cardFilter.cmcs, cmc)" class="filterIcon"
+            [ngClass]="{'activeFilterIcon' : cardFilter.cmcs.includes(cmc)}"
+            [src]="'assets/icons/' + cmc + 'manasymbol.svg'"></ion-icon>
         </ion-col>
       </ion-row>
     </ion-item>
+    <ion-button expand="block" (click)="resetFilter()">Reset Filter</ion-button>
   </ion-grid>
 </ion-content>

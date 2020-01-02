@@ -2,25 +2,27 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { MtgUser } from 'src/app/classes/mtg-user';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AuthenticationService } from '../authservices/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   userCollection = 'users';
-  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth) { }
+  constructor(private firestore: AngularFirestore, private authenticationService: AuthenticationService) { }
 
   /* Neuer Benutzer wird nach Registrierung hinzugefügt. */
-  addUser(id: string, email: string) {
-    this.firestore.collection(this.userCollection).doc(id).set({
-      email: email,
-      language: 'english'
-    }).then(() => this.getUser().then(u => console.log(u.data())));
-    
+  addUser(email: string, password: string) {
+    this.authenticationService.signup(email, password).then(u => {
+      this.firestore.collection(this.userCollection).doc(u.user.uid).set({
+        email: email,
+        language: 'english'
+      })
+    });
   }
 
   public getUserDoc() {
-    return this.firestore.collection(this.userCollection).doc(this.authentication.auth.currentUser.uid);
+    return this.firestore.collection(this.userCollection).doc(this.authenticationService.currentUserId);
   }
 
   /* Benutzer kann ausgelesen werden um Attribute zu lesen. */

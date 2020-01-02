@@ -64,9 +64,10 @@ export class AppComponent {
   ];
 
   getAppPagesByDevice(device: string) {
-    const visibility = this.authenticationService.isAuthenticated() ? 'private' : 'public';
+    const visibility = this.authenticationService.authenticated ? 'private' : 'public';
+    //const visibility = this.authenticationService.isAuthenticated() ? 'private' : 'public';
     return this.appPages.filter(p => (p.device === device || p.device === undefined))
-    .filter(p => (p.visibility === visibility || p.visibility === undefined));
+      .filter(p => (p.visibility === visibility || p.visibility === undefined));
   }
 
   constructor(

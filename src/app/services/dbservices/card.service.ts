@@ -41,6 +41,9 @@ export class CardService {
     return this.firestore.collection(this.cardCollection, ref => ref.where('own', '==', true));
   }
 
+
+  // After Update December 2019
+
   public getCardCollectionDoc() {
     return this.userService.getUserDoc().collection(this.cardCollection);
   }
@@ -54,7 +57,16 @@ export class CardService {
    return this.getCardCollectionDoc().doc(id).delete();
   }
 
-  updateCard(card: Card) {
-    return this.getCardCollectionDoc().doc(card.id).update(card);
+  public checkIfCardExistsInCollection(id: string) {
+    return this.getCardCollectionDoc().doc(id).get().toPromise();
   }
+
+  updateCard(card: Card) {
+    return this.getCardCollectionDoc().doc(card.id).update(Object.assign({}, card));
+  }
+
+  addCardToCollection(card: Card) {
+    return this.getCardCollectionDoc().doc(card.id).set(Object.assign({}, card));
+  }
+  
 }
