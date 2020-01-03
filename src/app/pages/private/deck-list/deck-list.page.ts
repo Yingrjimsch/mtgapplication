@@ -122,13 +122,8 @@ export class DeckListPage implements OnInit {
     this.alertService.presentCustomAlert("Are you sure you want to delete " + deck.deckName + "?", [], buttons);
   }
 
-  async openDeckDetail(deckId: string) {
-    const modalPage = await this.modalController.create({
-      component: DeckDetailComponent,
-      componentProps: { deckId: deckId }
-    });
-
-    return await modalPage.present();
+  openDeckDetail(deckId: string) {
+    return this.router.navigate(['private', 'deck-detail' , deckId]);  
   }
 
   ngOnInit() {}
