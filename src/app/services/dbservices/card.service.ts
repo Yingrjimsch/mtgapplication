@@ -6,6 +6,7 @@ import { CachedResourceLoader } from '@angular/platform-browser-dynamic/src/reso
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { UserService } from './user.service';
+import { DeckService } from './deck.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ import { UserService } from './user.service';
 export class CardService {
   
   readonly cardCollection = 'cards';
-  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private userService: UserService) { }
+  constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private userService: UserService, private deckService: DeckService) { }
 
   async addCard(card: Card) {
     return this.checkForExistingCard(card.multiverseId).then(c => {
@@ -53,7 +54,6 @@ export class CardService {
   }
 
   public deleteCardFromCollection(id: string) {
-   console.log(id); 
    return this.getCardCollectionDoc().doc(id).delete();
   }
 
@@ -69,4 +69,15 @@ export class CardService {
     return this.getCardCollectionDoc().doc(card.id).set(Object.assign({}, card));
   }
   
+  getAllCardsByDeck(id: string) {
+    return this.deckService.getDeckById(id).collection(this.cardCollection).get().toPromise();
+  }
+
+  updateCardFromDeck(id: string, card: Card) {
+    return this.deckService.getDeckById(id).collection(this.cardCollection).doc(card.id).update(Object.assign({}, card));
+  }
+
+  deleteCardFromDeck(deckId: string, cardId: string) {
+    return this.deckService.getDeckById(deckId).collection(this.cardCollection).doc(cardId).delete();
+  }
 }

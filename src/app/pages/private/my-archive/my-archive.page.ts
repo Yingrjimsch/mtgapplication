@@ -100,9 +100,7 @@ export class MyArchivePage implements OnInit {
   }
   
   private deleteCardFromCollection(card: Card) {
-    //TODO first delete in db and then delete on UI
-    this.cards.splice(this.cards.indexOf(card), 1);
-    this.cardService.deleteCardFromCollection(card.id);
+    this.cardService.deleteCardFromCollection(card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
   }
 
   async addCardByName() {

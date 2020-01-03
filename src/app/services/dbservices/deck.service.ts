@@ -11,19 +11,23 @@ export class DeckService {
 
   constructor(private userService: UserService) { }
 
-  public getDeckDoc() {
+  public getDeckCollection() {
     return this.userService.getUserDoc().collection(this.deckCollection);
   }
 
   getDecksOfLoggedInUser() {
-    return this.getDeckDoc().get().toPromise();
+    return this.getDeckCollection().get().toPromise();
   }
 
   createDeck(deck: Deck) {
-    return this.getDeckDoc().doc(deck.id).set(Object.assign({}, deck));
+    return this.getDeckCollection().doc(deck.id).set(Object.assign({}, deck));
   }
 
   deleteDeck(id: string) {
-    return this.getDeckDoc().doc(id).delete();
+    return this.getDeckCollection().doc(id).delete();
+  }
+
+  getDeckById(id: string) {
+    return this.getDeckCollection().doc(id);
   }
 }
