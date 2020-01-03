@@ -1,7 +1,7 @@
 
 export class Card {
 
-  constructor(id: string, name: string, multiverseId: string, rarity: string, colors: string[], cmc: number, types: string[], legalities: string[]) {
+  constructor(id: string, name: string, multiverseId: string, rarity: string, colors: string[], cmc: number, types: string[], legalities: [][]) {
     this.id = id;
     this.name = name;
     this.multiverseId = multiverseId;
@@ -12,10 +12,11 @@ export class Card {
     this.count = 1;
     this.legalities = legalities;
     console.log(this.legalities);
+    this.legalities.forEach(l => console.log(l['legality']));
   }
 
   // used for deck detail & overview
-  public legalities: string[];
+  public legalities: [][];
 
   // used for card detail & overview
   public count: number;

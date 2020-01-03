@@ -11,7 +11,7 @@
   <ion-searchbar [(ngModel)]="searchstring"></ion-searchbar>
   <ion-grid *ngIf="!plt.is('mobile')">
     <ion-row>
-      <ion-col *ngFor="let card of getMyCards()">
+      <ion-col *ngFor="let card of getFilteredCards()">
         <ion-card class="cardWithImageAndText">
           <ion-item lines="none">
             <ion-title class="centeredText">{{ card.count }}x</ion-title>
@@ -26,8 +26,8 @@
     </ion-row>
   </ion-grid>
   <ion-list class="fullHeight" *ngIf="plt.is('mobile')">
-    <div *ngIf="getMyCards().length > 0">
-    <ion-item *ngFor="let card of getMyCards()">
+    <div *ngIf="getFilteredCards().length > 0">
+    <ion-item *ngFor="let card of getFilteredCards()">
       <ion-thumbnail slot="start">
         <img [src]="'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + card.multiverseId + '&type=card'" />
       </ion-thumbnail>
@@ -39,7 +39,7 @@
         size="large" color="dark" role="button" name="more"></ion-icon>
     </ion-item>
   </div>
-  <div class="fullHeight textCenter" *ngIf="getMyCards().length == 0">
+  <div class="fullHeight textCenter" *ngIf="getFilteredCards().length == 0">
     <ion-label>No Card found</ion-label>
   </div>
   </ion-list>
@@ -55,6 +55,7 @@
     <ion-fab-list side="start">
       <ion-fab-button (click)="scannCard()"><ion-icon name="qr-scanner"></ion-icon></ion-fab-button>
       <ion-fab-button (click)="addCardByName()"><ion-icon name="text"></ion-icon></ion-fab-button>
+      <ion-fab-button (click)="addCardsFile()"><ion-icon name="document"></ion-icon></ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 </ion-content>

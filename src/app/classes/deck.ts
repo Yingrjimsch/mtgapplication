@@ -9,5 +9,5 @@ export class Deck {
   public id: string;
   public deckName: string;
   public numberOfCards: number;
-  public legality: string;
+  public legalities: string[];
 }

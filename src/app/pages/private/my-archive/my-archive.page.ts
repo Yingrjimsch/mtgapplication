@@ -13,6 +13,9 @@ import { MagicTheGatheringService } from 'src/app/services/httpservices/magic-th
 import { ScannerService } from 'src/app/services/uiservices/scanner.service';
 import { Languages } from 'src/app/enums/languages';
 import { LoadingService } from 'src/app/services/uiservices/loading.service';
+import { MtgUser } from 'src/app/classes/mtg-user';
+import { UserService } from 'src/app/services/dbservices/user.service';
+import { ToastService } from 'src/app/services/uiservices/toast.service';
 
 @Component({
   selector: 'app-my-archive',
@@ -23,12 +26,19 @@ export class MyArchivePage implements OnInit {
   public searchstring = '';
   public cards: Array<Card> = new Array<Card>();
   private cardFilter = new CardFilter();
+  public mtgUser: MtgUser = new MtgUser();
 
-  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private cardService: CardService, private modalController: ModalController, private alertService: AlertService, private mtgService: MagicTheGatheringService, private scannerService: ScannerService, private loadingService: LoadingService) {
+  constructor(public plt: Platform, private actionSheetService: ActionSheetService, private cardService: CardService,
+    private modalController: ModalController, private alertService: AlertService, private mtgService: MagicTheGatheringService,
+    private scannerService: ScannerService, private loadingService: LoadingService, userService: UserService,
+    private toastService: ToastService) {
+      // TODO maybe store User in cache or something!
+    userService.getUser().then(user => this.mtgUser = (user.data() as MtgUser))
+      .catch(() => toastService.presentErrorToast('Could not find Loggedin User.'));
     this.cardService.getCardCollectionOfLoggedInUser().then(cards => cards.forEach(c => this.cards.push(c.data() as Card)));
   }
 
-  getMyCards(): Array<Card> {
+  getFilteredCards(): Array<Card> {
     return this.cards.filter(c => this.hasSameName(c)
       && this.hasSameType(c)
       && this.hasSameColor(c)
@@ -56,6 +66,7 @@ export class MyArchivePage implements OnInit {
     return c.name.toLowerCase().includes(this.searchstring.toLowerCase());
   }
 
+  // TODO decide if filterservice is maybe a good idea?
   async openFilter() {
     const modalPage = await this.modalController.create({
       component: FilterComponent,
@@ -90,6 +101,7 @@ export class MyArchivePage implements OnInit {
         role: 'cancel',
         handler: () => { }
       }
+      // TODO add Card to Deck
     ];
     this.actionSheetService.presentCustomActionSheet(header, buttons);
   }
@@ -116,9 +128,16 @@ export class MyArchivePage implements OnInit {
         handler: () => { }
       },
       {
+        text: 'Search',
+        handler: () => {
+          // todo search card by name and show in something
+          console.log('Search Card By Name not done yet!');
+         }
+      },
+      {
         text: 'Add',
         handler: (data: { cardName: string; }) => {
-          if(!data.cardName) {
+          if (!data.cardName) {
             return;
           }
           this.loadingService.present('Search Card...');
@@ -148,7 +167,7 @@ export class MyArchivePage implements OnInit {
       {
         text: 'Delete',
         handler: (data: { deleteCount: number; }) => {
-          card.count <= data.deleteCount ? this.deleteCardFromCollection(card) : this.changeCardCount(card, card.count - data.deleteCount)
+          card.count <= data.deleteCount ? this.deleteCardFromCollection(card) : this.changeCardCount(card, card.count - data.deleteCount);
 
         }
       }
@@ -194,8 +213,13 @@ export class MyArchivePage implements OnInit {
   scannCard() {
     this.loadingService.present('Search Card...');
     this.scannerService.scannCard()
-      .then(card => this.mtgService.getCardByNameAndLanguage(card.getName(), card.getLanguage()))
+      .then(card => this.mtgService.getCardByNameAndLanguage(card.getName(), this.mtgUser.language))
       .then(card => this.addOrUpdateCard(card));
+  }
+
+  addCardsFile() {
+    // import cards of file in clipboard
+    console.log('adding cards by file not done yet!');
   }
   ngOnInit() {
   }

@@ -134,14 +134,23 @@ export class DeckDetailPage implements OnInit, OnDestroy {
   private addOrUpdateCard(deck: Deck, c: Card) {
     this.cardService.checkIfCardExistsInDeck(deck.id, c.id).then(c2 => {
       this.loadingService.dismiss();
-      c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck.id, c);
+      c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck, c);
     });
   }
 
-  addCardToCollection(deckId: string, card: Card) {
+  addCardToCollection(deck: Deck, card: Card) {
     this.loadingService.present('Add Card...');
-    this.cardService.addCardToDeck(deckId, card).then(() => this.cards.push(card));
+    this.cardService.addCardToDeck(deck.id, card).then(() => this.cards.push(card)); // .then(() => this.updateDeckByCard(deck, card, 1));
     this.loadingService.dismiss();
+  }
+  updateDeckByCard(deck: Deck, card: Card, count: number): any {
+    // TODO Update Deck Legality and count!
+    card.legalities.forEach(l => {
+      if (l['legality'] === 'Legal' && !deck.legalities.includes(l['format'])) {
+        deck.legalities.push(l['format']);
+        console.log(deck);
+       }
+    });
   }
 
   async showAddCardCopyAlert(deckId: string, card: Card) {
