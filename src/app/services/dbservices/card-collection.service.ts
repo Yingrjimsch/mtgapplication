@@ -16,7 +16,7 @@ export class CardCollectionService {
   constructor(private firestore: AngularFirestore, public cardService: CardService) {
   }
 
-  addCardTOCollection2(collectionId: string, card: Card) {
+  /*addCardTOCollection2(collectionId: string, card: Card) {
     this.firestore.collection('cardCollections').doc(collectionId)
       .collection('cards', q => q.where('multiverseId', '==', card.multiverseId)).get()
       .toPromise().then(c => {
@@ -95,7 +95,7 @@ export class CardCollectionService {
   getCardsByCollection(collectionId: string) {
     return this.firestore.collection('card_collection', q => q.where('cardCollectionId', '==', collectionId)).snapshotChanges()
       .pipe(
-        map(c => /*{*/
+        map(c => {
           c.map(a => ({ cardId: a.payload.doc.data()['cardId'], ...this.cardService.getCardById2(a.payload.doc.data()['cardId'])}))
         // this.cardService.getCardById2('hVDpwIEn1P4xxqVYJWeg').toPromise()
         // .then(c2 => c.map(d => ({numberOfCards: d.payload.doc.data()['number'], ...c2})))
@@ -112,5 +112,5 @@ export class CardCollectionService {
       .get().toPromise()
       .then(c => c.docs.forEach(d => this.card_collectionPath.doc(d.id).delete()));
   }
-
+*/
 }

@@ -98,7 +98,7 @@ export class MyArchivePage implements OnInit {
     card.count = count;
     this.cardService.updateCard(card);
   }
-  
+
   private deleteCardFromCollection(card: Card) {
     this.cardService.deleteCardFromCollection(card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
   }
@@ -195,7 +195,7 @@ export class MyArchivePage implements OnInit {
     this.loadingService.present('Search Card...');
     this.scannerService.scannCard()
       .then(card => this.mtgService.getCardByNameAndLanguage(card.getName(), card.getLanguage()))
-      .then(card => this.addOrUpdateCard(card))
+      .then(card => this.addOrUpdateCard(card));
   }
   ngOnInit() {
   }

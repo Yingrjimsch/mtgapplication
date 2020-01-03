@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class AuthGuardService implements CanActivate {
 
-  constructor(public auth: AuthenticationService, private router: Router, private authentication: AngularFireAuth) { }
+  constructor(public authenticationService: AuthenticationService, private router: Router) { }
 
   /*canActivate(): boolean {
     console.log('isauth');
@@ -30,9 +30,9 @@ export class AuthGuardService implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | boolean {
-    if (this.auth.authenticated) { return true; }
+    if (this.authenticationService.authenticated) { return true; }
 
-    console.log('access denied!')
+    console.log('access denied!');
     this.router.navigate(['/login']);
     return false;
   }

@@ -39,15 +39,15 @@ export class MagicTheGatheringService {
 
   async getCardByName(name: string) {
     const user = await this.userService.getUser();
-    let mtgUser = (user.data() as MtgUser);
-    return this.getCardByNameAndLanguage(name, mtgUser.language); 
+    const mtgUser = (user.data() as MtgUser);
+    return this.getCardByNameAndLanguage(name, mtgUser.language);
   }
 
 
   async getCardByNameAndLanguage(name: string, language: string) {
     const response = await this.getCardSource(name, language).toPromise();
-    let cardSrc = response.json().cards[0];
-    var card = new Card(cardSrc.id, cardSrc.name, cardSrc.multiverseid, cardSrc.rarity, cardSrc.colors, cardSrc.cmc, cardSrc.types);
+    const cardSrc = response.json().cards[0];
+    const card = new Card(cardSrc.id, cardSrc.name, cardSrc.multiverseid, cardSrc.rarity, cardSrc.colors, cardSrc.cmc, cardSrc.types, cardSrc.legalities);
     // Hier wird die Karte nach Sprache gesucht.
     const foreignCard = cardSrc.foreignNames.find(f => (f.language as string).toLowerCase() === language.toLowerCase());
     if (foreignCard) {

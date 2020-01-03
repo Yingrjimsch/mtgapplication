@@ -17,6 +17,9 @@ import { CardService } from '../../../services/dbservices/card.service';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
 import { UserService } from 'src/app/services/dbservices/user.service';
 import { MtgUser } from 'src/app/classes/mtg-user';
+import { ScannerService } from 'src/app/services/uiservices/scanner.service';
+import { Deck } from 'src/app/classes/deck';
+import { LoadingService } from 'src/app/services/uiservices/loading.service';
 
 @Component({
   selector: 'app-scanner',
@@ -26,29 +29,31 @@ import { MtgUser } from 'src/app/classes/mtg-user';
 export class ScannerPage implements OnInit {
 
   public card: Card;
-  private mtgUser: MtgUser = new MtgUser();
+  public mtgUser: MtgUser = new MtgUser();
 
   constructor(
-    private camera: Camera,
-    private visionService: GoogleCloudVisionService,
     private alertService: AlertService,
     private mtgService: MagicTheGatheringService,
     private toastService: ToastService,
-    private userService: UserService,
+    userService: UserService,
     public plt: Platform,
-    private cardCollectionService: CardCollectionService,
     private firestoreService: FirestoreService,
-    private cardService: CardService
+    private scannerService: ScannerService,
+    private cardService: CardService,
+    private loadingService: LoadingService
   ) {
     userService.getUser().then(user => {
       this.mtgUser = (user.data() as MtgUser);
-      this.takePhoto();
+      this.scannCard();
     }).catch(err => toastService.presentErrorToast('Could not find Loggedin User.'));
   }
 
-  takePhoto() {
+  scannCard() {
+    this.scannerService.scannCard().then()
+    .then(card => this.mtgService.getCardByNameAndLanguage(card.getName(), card.getLanguage()))
+    .then(card => this.card = card);
     // this.card = new Card('Angelic Rocket', '439528')
-    const options: CameraOptions = {
+    /*const options: CameraOptions = {
       quality: 100,
       targetHeight: 700,
       targetWidth: 500,
@@ -72,10 +77,10 @@ export class ScannerPage implements OnInit {
       () => {
         this.toastService.presentErrorToast('Error while trying to make picture');
       }
-    );
+    );*/
   }
 
-  parseMTGServiceResponse(scannedCard: ScannedCard) {
+  /*parseMTGServiceResponse(scannedCard: ScannedCard) {
     this.mtgService.getCard(scannedCard).toPromise().then(response => {
       const card = response.json().cards[0];
       this.card = new Card(card.id, card.name, card.multiverseId, card.rarity, card.colors, card.cmc, card.types);
@@ -92,7 +97,7 @@ export class ScannerPage implements OnInit {
     const responseToParse = textDetectionResponse.json().responses[0].textAnnotations[0];
     return new ScannedCard(responseToParse.description, responseToParse.locale);
   }
-
+*/
   ngOnInit() {
   }
 
@@ -126,9 +131,9 @@ export class ScannerPage implements OnInit {
     }).catch(() => this.toastService.presentErrorToast('Could not find Settings.'));
   }*/
 
-  async presentCardCollections() {
+  async presentDecks() {
     this.firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').toPromise().then(decks => {
-      const header = 'Collections';
+      const header = 'Decks';
       const inputs: AlertInput[] = [];
       decks.forEach(c => inputs.push({
         name: c.deckName,
@@ -147,11 +152,49 @@ export class ScannerPage implements OnInit {
         }, {
           text: 'Ok',
           handler: data => {
-            data.forEach((deck: CardCollection) => this.firestoreService.addCardToDeck(deck, this.card));
+            data.forEach((deck: Deck) => this.cardService.addCardToDeck(deck.id, this.card));
           }
         }
       ];
       this.alertService.presentCustomAlert(header, inputs, buttons);
     }).catch(() => this.toastService.presentErrorToast('Could not find Settings.'));
+  }
+
+  private addOrUpdateCard(deck: Deck, c: Card) {
+    this.cardService.checkIfCardExistsInDeck(deck.id, c.id).then(c2 => {
+      this.loadingService.dismiss();
+      c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck.id, c);
+    });
+  }
+
+  addCardToCollection(deckId: string, card: Card) {
+    this.loadingService.present('Add Card...');
+    this.cardService.addCardToDeck(deckId, card);
+    this.loadingService.dismiss();
+  }
+
+  async showAddCardCopyAlert(deckId: string, card: Card) {
+    this.loadingService.dismiss();
+    const buttons = [
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
+      },
+      {
+        text: 'Ok',
+        handler: () => {
+          this.loadingService.present('Update Card...');
+          this.changeCardCount(card, ++card.count, deckId);
+          this.loadingService.dismiss();
+        }
+      }
+    ];
+    this.alertService.presentCustomAlert('Do you want to add a Copie of ' + card.name + ' to your collection?', [], buttons);
+  }
+
+  private changeCardCount(card: Card, count: number, deckId: string) {
+    card.count = count;
+    this.cardService.updateCardFromDeck(deckId, card);
   }
 }

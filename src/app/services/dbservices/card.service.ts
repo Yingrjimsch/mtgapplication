@@ -12,11 +12,12 @@ import { DeckService } from './deck.service';
   providedIn: 'root'
 })
 export class CardService {
-  
-  readonly cardCollection = 'cards';
+
   constructor(private firestore: AngularFirestore, private authentication: AngularFireAuth, private userService: UserService, private deckService: DeckService) { }
 
-  async addCard(card: Card) {
+  readonly cardCollection = 'cards';
+
+  /*async addCard(card: Card) {
     return this.checkForExistingCard(card.multiverseId).then(c => {
       if (c.size !== 0) {
         return c.docs[0].id;
@@ -41,7 +42,7 @@ export class CardService {
   getMyCards(): AngularFirestoreCollection<Card> {
     return this.firestore.collection(this.cardCollection, ref => ref.where('own', '==', true));
   }
-
+*/
 
   // After Update December 2019
 
@@ -68,7 +69,7 @@ export class CardService {
   addCardToCollection(card: Card) {
     return this.getCardCollectionDoc().doc(card.id).set(Object.assign({}, card));
   }
-  
+
   getAllCardsByDeck(id: string) {
     return this.deckService.getDeckById(id).collection(this.cardCollection).get().toPromise();
   }
@@ -79,5 +80,13 @@ export class CardService {
 
   deleteCardFromDeck(deckId: string, cardId: string) {
     return this.deckService.getDeckById(deckId).collection(this.cardCollection).doc(cardId).delete();
+  }
+
+  addCardToDeck(deckId: string, card: Card) {
+    return this.deckService.getDeckById(deckId).collection(this.cardCollection).doc(card.id).set(Object.assign({}, card));
+  }
+
+  checkIfCardExistsInDeck(deckId: string, cardId: string) {
+    return this.deckService.getDeckById(deckId).collection(this.cardCollection).doc(cardId).get().toPromise();
   }
 }
