@@ -20,6 +20,7 @@ import { MtgUser } from 'src/app/classes/mtg-user';
 import { ScannerService } from 'src/app/services/uiservices/scanner.service';
 import { Deck } from 'src/app/classes/deck';
 import { LoadingService } from 'src/app/services/uiservices/loading.service';
+import { DeckService } from 'src/app/services/dbservices/deck.service';
 
 @Component({
   selector: 'app-scanner',
@@ -40,7 +41,8 @@ export class ScannerPage implements OnInit {
     private firestoreService: FirestoreService,
     private scannerService: ScannerService,
     private cardService: CardService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private deckService: DeckService
   ) {
     userService.getUser().then(user => {
       this.mtgUser = (user.data() as MtgUser);
@@ -132,14 +134,14 @@ export class ScannerPage implements OnInit {
   }*/
 
   async presentDecks() {
-    this.firestoreService.getDecksByUserId('5Y3LIYvotpzCBXpUcBIv').toPromise().then(decks => {
+    this.deckService.getDecksOfLoggedInUser().then(decks => {
       const header = 'Decks';
       const inputs: AlertInput[] = [];
-      decks.forEach(c => inputs.push({
-        name: c.deckName,
+      decks.forEach(d => inputs.push({
+        name: d.data().deckName,
         type: 'checkbox',
-        label: c.deckName,
-        value: c.id
+        label: d.data().deckName,
+        value: d.data().id
       }));
       const buttons: AlertButton[] = [
         {
@@ -152,7 +154,7 @@ export class ScannerPage implements OnInit {
         }, {
           text: 'Ok',
           handler: data => {
-            data.forEach((deck: Deck) => this.cardService.addCardToDeck(deck.id, this.card));
+            data.forEach((deck: Deck) => this.addOrUpdateCard(deck, this.card));
           }
         }
       ];
@@ -161,7 +163,7 @@ export class ScannerPage implements OnInit {
   }
 
   private addOrUpdateCard(deck: Deck, c: Card) {
-    this.cardService.checkIfCardExistsInDeck(deck.id, c.id).then(c2 => {
+    this.cardService.checkIfCardExists(this.deckService.getDeckById(deck.id), c.id).then(c2 => {
       this.loadingService.dismiss();
       c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck.id, c);
     });
@@ -169,7 +171,7 @@ export class ScannerPage implements OnInit {
 
   addCardToCollection(deckId: string, card: Card) {
     this.loadingService.present('Add Card...');
-    this.cardService.addCardToDeck(deckId, card);
+    this.cardService.addCard(this.deckService.getDeckById(deckId), card);
     this.loadingService.dismiss();
   }
 
@@ -195,6 +197,6 @@ export class ScannerPage implements OnInit {
 
   private changeCardCount(card: Card, count: number, deckId: string) {
     card.count = count;
-    this.cardService.updateCardFromDeck(deckId, card);
+    this.cardService.updateCard(this.deckService.getDeckById(deckId), card);
   }
 }

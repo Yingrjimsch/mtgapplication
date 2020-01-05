@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DeckService } from 'src/app/services/dbservices/deck.service';
 import { ActionSheetButton } from '@ionic/core';
 import { LoadingService } from 'src/app/services/uiservices/loading.service';
+import { CardUiService } from 'src/app/services/uiservices/card-ui.service';
 
 @Component({
   selector: 'app-deck-detail',
@@ -28,13 +29,14 @@ export class DeckDetailPage implements OnInit, OnDestroy {
     private alertService: AlertService,
     private mtgService: MagicTheGatheringService,
     private deckService: DeckService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private cardUiService: CardUiService
   ) {
     this.sub = route.params
       .subscribe(p => {
         this.deckService.getDeckById(p.id).get().toPromise().then(d => this.deck = d.data() as Deck);
         this.cardService
-          .getAllCardsByDeck(p.id)
+          .getCards(deckService.getDeckById(p.id))
           .then(cards => cards.forEach(c => this.cards.push(c.data() as Card)));
       });
   }
@@ -71,11 +73,11 @@ export class DeckDetailPage implements OnInit, OnDestroy {
 
   private changeCardCount(card: Card, count: number) {
     card.count = count;
-    this.cardService.updateCardFromDeck(this.deck.id, card);
+    this.cardService.updateCard(this.deckService.getDeckById(this.deck.id), card);
   }
 
   private deleteCardFromCollection(card: Card) {
-    this.cardService.deleteCardFromDeck(this.deck.id, card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
+    this.cardService.deleteCard(this.deckService.getDeckById(this.deck.id), card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
   }
 
   async deleteMultipleCards(card: Card) {
@@ -116,15 +118,27 @@ export class DeckDetailPage implements OnInit, OnDestroy {
       },
       {
         text: 'Add',
-        handler: (data: { cardName: string; }) => {
+        handler: async (data: { cardName: string; }) => {
           if(!data.cardName) {
             return;
           }
           this.loadingService.present('Search Card...');
-          this.mtgService.getCardByName(data.cardName)
+          /*this.mtgService.getCardByName(data.cardName)
             .then(c => {
               this.addOrUpdateCard(this.deck, c);
-            });
+            });*/
+            let card = await this.mtgService.getCardByName(data.cardName);
+            this.loadingService.dismiss();
+            card = await this.cardUiService.addOrUpdateCard(this.deckService.getDeckById(this.deck.id), card);
+            if (!card) {
+              return;
+            }
+            const oldCard = this.cards.find(c => c.id === card.id);
+            if (oldCard) {
+              this.cards[this.cards.indexOf(oldCard)] = card;
+              return;
+            }
+            this.cards.push(card);
         }
       }
     ];
@@ -132,7 +146,7 @@ export class DeckDetailPage implements OnInit, OnDestroy {
   }
 
   private addOrUpdateCard(deck: Deck, c: Card) {
-    this.cardService.checkIfCardExistsInDeck(deck.id, c.id).then(c2 => {
+    this.cardService.checkIfCardExists(this.deckService.getDeckById(deck.id), c.id).then(c2 => {
       this.loadingService.dismiss();
       c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck, c);
     });
@@ -140,7 +154,7 @@ export class DeckDetailPage implements OnInit, OnDestroy {
 
   addCardToCollection(deck: Deck, card: Card) {
     this.loadingService.present('Add Card...');
-    this.cardService.addCardToDeck(deck.id, card).then(() => this.cards.push(card)); // .then(() => this.updateDeckByCard(deck, card, 1));
+    this.cardService.addCard(this.deckService.getDeckById(deck.id), card).then(() => this.cards.push(card)); // .then(() => this.updateDeckByCard(deck, card, 1));
     this.loadingService.dismiss();
   }
   updateDeckByCard(deck: Deck, card: Card, count: number): any {

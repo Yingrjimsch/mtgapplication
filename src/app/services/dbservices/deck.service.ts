@@ -15,6 +15,14 @@ export class DeckService {
     return this.userService.getUserDoc().collection(this.deckCollection);
   }
 
+  public getDeckDocById(deckId: string) {
+    return this.getDeckCollection().doc(deckId);
+  }
+
+  public getCardCollectionByDeckId(deckId: string) {
+    return this.getDeckCollection().doc(deckId);
+  }
+
   getDecksOfLoggedInUser() {
     return this.getDeckCollection().get().toPromise();
   }

@@ -30,12 +30,12 @@ export class MyArchivePage implements OnInit {
 
   constructor(public plt: Platform, private actionSheetService: ActionSheetService, private cardService: CardService,
     private modalController: ModalController, private alertService: AlertService, private mtgService: MagicTheGatheringService,
-    private scannerService: ScannerService, private loadingService: LoadingService, userService: UserService,
+    private scannerService: ScannerService, private loadingService: LoadingService, private userService: UserService,
     private toastService: ToastService) {
       // TODO maybe store User in cache or something!
     userService.getUser().then(user => this.mtgUser = (user.data() as MtgUser))
       .catch(() => toastService.presentErrorToast('Could not find Loggedin User.'));
-    this.cardService.getCardCollectionOfLoggedInUser().then(cards => cards.forEach(c => this.cards.push(c.data() as Card)));
+    this.cardService.getCards(userService.getUserDoc()).then(cards => cards.forEach(c => this.cards.push(c.data() as Card)));
   }
 
   getFilteredCards(): Array<Card> {
@@ -108,11 +108,11 @@ export class MyArchivePage implements OnInit {
 
   private changeCardCount(card: Card, count: number) {
     card.count = count;
-    this.cardService.updateCard(card);
+    this.cardService.updateCard(this.userService.getUserDoc(), card);
   }
 
   private deleteCardFromCollection(card: Card) {
-    this.cardService.deleteCardFromCollection(card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
+    this.cardService.deleteCard(this.userService.getUserDoc(), card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
   }
 
   async addCardByName() {
@@ -176,7 +176,7 @@ export class MyArchivePage implements OnInit {
   }
 
   private addOrUpdateCard(c: Card) {
-    this.cardService.checkIfCardExistsInCollection(c.id).then(c2 => {
+    this.cardService.checkIfCardExists(this.userService.getUserDoc(), c.id).then(c2 => {
       this.loadingService.dismiss();
       c2.exists ? this.showAddCardCopyAlert(c2.data() as Card) : this.addCardToCollection(c);
     });
@@ -184,7 +184,7 @@ export class MyArchivePage implements OnInit {
 
   addCardToCollection(card: Card) {
     this.loadingService.present('Add Card...');
-    this.cardService.addCardToCollection(card).then(() => this.cards.push(card));
+    this.cardService.addCard(this.userService.getUserDoc(), card).then(() => this.cards.push(card));
     this.loadingService.dismiss();
   }
 
@@ -202,7 +202,7 @@ export class MyArchivePage implements OnInit {
           this.loadingService.present('Update Card...');
           card = this.cards.find(c => c.id === card.id);
           card.count++;
-          this.cardService.updateCard(card);
+          this.cardService.updateCard(this.userService.getUserDoc(), card);
           this.loadingService.dismiss();
         }
       }

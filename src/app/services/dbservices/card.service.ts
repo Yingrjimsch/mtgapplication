@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Card } from '../../classes/card';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { CachedResourceLoader } from '@angular/platform-browser-dynamic/src/resource_loader/resource_loader_cache';
 import { Observable } from 'rxjs';
@@ -46,30 +46,32 @@ export class CardService {
 
   // After Update December 2019
 
-  public getCardCollectionDoc() {
-    return this.userService.getUserDoc().collection(this.cardCollection);
+  public getCardCollection(doc: AngularFirestoreDocument) {
+    //return this.userService.getUserDoc()
+    return doc.collection(this.cardCollection);
   }
 
-  getCardCollectionOfLoggedInUser() {
-    return this.getCardCollectionDoc().get().toPromise();
+  public getCards(doc: AngularFirestoreDocument) {
+    return this.getCardCollection(doc).get().toPromise();
   }
 
-  public deleteCardFromCollection(id: string) {
-   return this.getCardCollectionDoc().doc(id).delete();
+  public deleteCard(doc: AngularFirestoreDocument, cardId: string) {
+   return this.getCardCollection(doc).doc(cardId).delete();
   }
 
-  public checkIfCardExistsInCollection(id: string) {
-    return this.getCardCollectionDoc().doc(id).get().toPromise();
+  public checkIfCardExists(doc: AngularFirestoreDocument, cardId: string) {
+    return this.getCardCollection(doc).doc(cardId).get().toPromise();
   }
 
-  updateCard(card: Card) {
-    return this.getCardCollectionDoc().doc(card.id).update(Object.assign({}, card));
+  updateCard(doc: AngularFirestoreDocument, card: Card) {
+    return this.getCardCollection(doc).doc(card.id).update(Object.assign({}, card));
+    //return this.getCardCollection().doc(card.id).update(Object.assign({}, card));
   }
 
-  addCardToCollection(card: Card) {
-    return this.getCardCollectionDoc().doc(card.id).set(Object.assign({}, card));
+  addCard(doc: AngularFirestoreDocument,card: Card) {
+    return this.getCardCollection(doc).doc(card.id).set(Object.assign({}, card));
   }
-
+/*
   getAllCardsByDeck(id: string) {
     return this.deckService.getDeckById(id).collection(this.cardCollection).get().toPromise();
   }
@@ -88,5 +90,5 @@ export class CardService {
 
   checkIfCardExistsInDeck(deckId: string, cardId: string) {
     return this.deckService.getDeckById(deckId).collection(this.cardCollection).doc(cardId).get().toPromise();
-  }
+  }*/
 }

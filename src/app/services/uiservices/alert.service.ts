@@ -1,19 +1,18 @@
-import { Injectable } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { from } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { AlertController } from "@ionic/angular";
+import { from } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AlertService {
-
-  constructor(private alertController: AlertController) { }
+  constructor(private alertController: AlertController) {}
 
   async presentErrorAlert(message: string) {
     const alert = await this.alertController.create({
-      header: 'Error',
+      header: "Error",
       subHeader: message,
-      buttons: ['OK']
+      buttons: ["OK"]
     });
     await alert.present();
   }
@@ -26,4 +25,29 @@ export class AlertService {
     });
     await alert.present();
   }
+  
+  async confirmationAlert(message: string): Promise<boolean> {
+    let resolveFunction: (confirm: boolean) => void;
+    const promise = new Promise<boolean>(resolve => {
+      resolveFunction = resolve;
+    });
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message,
+      backdropDismiss: false,
+      buttons: [
+        {
+          text: 'No',
+          handler: () => resolveFunction(false)
+        },
+        {
+          text: 'Yes',
+          handler: () => resolveFunction(true)
+        }
+      ]
+    });
+    await alert.present();
+    return promise;
+  }
+  
 }
