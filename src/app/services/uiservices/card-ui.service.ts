@@ -17,7 +17,7 @@ export class CardUiService {
     const cardPromise = await this.cardDbService.checkIfCardExists(doc, card.id);
     if (cardPromise.exists) {
       card = cardPromise.data() as Card;
-      const confirm = await this.alertService.confirmationAlert('Test');
+      const confirm = await this.alertService.confirmationAlert('Do you really want to add one copy of this card?');
       if (confirm) {
         card.count++;
         await this.cardDbService.updateCard(doc, card);
@@ -29,22 +29,17 @@ export class CardUiService {
     return card;
   }
 
-  async showAddCardCopyAlert(doc: AngularFirestoreDocument, card: Card) {
-    const buttons = [
-      {
-        text: 'No',
-        handler: () => { }
-      },
-      {
-        text: 'Yes',
-        handler: () => {
-          this.loadingService.present('Update Card...');
-          card.count++;
-          this.cardDbService.updateCard(doc, card);
-          this.loadingService.dismiss();
-        }
-      }
-    ];
-    return this.alertService.presentCustomAlert('Do you want to add a copy of ' + card.name + ' to this collection?', [], buttons);
+  public async deleteCards(doc: AngularFirestoreDocument, card: Card) {
+    if (card.count > 1) {
+      const count = await this.alertService.presentNumberAlert("How many copies of this card would you like to delete?", card.count);
+      if (card.count > count) {
+        card.count = card.count - count;
+        this.cardDbService.updateCard(doc, card);
+        return card;
+      } 
+    }
+      card.count = 0;
+      this.cardDbService.deleteCard(doc, card.id);
+      return card;
   }
 }

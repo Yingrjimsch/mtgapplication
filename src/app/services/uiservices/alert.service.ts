@@ -6,6 +6,7 @@ import { from } from "rxjs";
   providedIn: "root"
 })
 export class AlertService {
+  
   constructor(private alertController: AlertController) {}
 
   async presentErrorAlert(message: string) {
@@ -43,6 +44,36 @@ export class AlertService {
         {
           text: 'Yes',
           handler: () => resolveFunction(true)
+        }
+      ]
+    });
+    await alert.present();
+    return promise;
+  }
+
+  async presentNumberAlert(message: string, count: number) {
+    let resolveFunction: (count: number) => void;
+    const promise = new Promise<number>(resolve => {
+      resolveFunction = resolve;
+    });
+    const alert = await this.alertController.create({
+      header: 'Delete Card',
+      message,
+      backdropDismiss: false,
+      inputs: [{
+        name: 'deleteCount',
+        label: 'Delete Count',
+        value: count,
+        type: 'number'
+      }],
+      buttons: [
+        {
+          text: 'No',
+          handler: () => resolveFunction(0)
+        },
+        {
+          text: 'Yes',
+          handler: (data: { deleteCount: number; }) => resolveFunction(data.deleteCount),
         }
       ]
     });

@@ -50,8 +50,10 @@ export class DeckDetailPage implements OnInit, OnDestroy {
         text: 'Delete',
         role: 'destructive',
         icon: 'trash',
-        handler: () => {
-          card.count === 1 ? this.deleteCardFromCollection(card) : this.deleteMultipleCards(card);
+        handler: async () => {
+          let c = await this.cardUiService.deleteCards(this.deckService.getDeckById(this.deck.id), card);
+          c.count === 0 ? this.cards.splice(this.cards.indexOf(c), 1) : this.cards[this.cards.indexOf(c)] = c;
+          //card.count === 1 ? this.deleteCardFromCollection(card) : this.deleteMultipleCards(card);
         }
       },
       {
@@ -76,34 +78,6 @@ export class DeckDetailPage implements OnInit, OnDestroy {
     this.cardService.updateCard(this.deckService.getDeckById(this.deck.id), card);
   }
 
-  private deleteCardFromCollection(card: Card) {
-    this.cardService.deleteCard(this.deckService.getDeckById(this.deck.id), card.id).then(() => this.cards.splice(this.cards.indexOf(card), 1));
-  }
-
-  async deleteMultipleCards(card: Card) {
-    const inputs = [{
-      name: 'deleteCount',
-      label: 'Delete Count',
-      value: card.count,
-      type: 'number'
-    }];
-    const buttons = [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => { }
-      },
-      {
-        text: 'Delete',
-        handler: (data: { deleteCount: number; }) => {
-          card.count <= data.deleteCount ? this.deleteCardFromCollection(card) : this.changeCardCount(card, card.count - data.deleteCount);
-
-        }
-      }
-    ];
-    this.alertService.presentCustomAlert('Delete Card', inputs, buttons);
-  }
-
   async addCardByName() {
     const inputs = [{
       name: 'cardName',
@@ -123,10 +97,6 @@ export class DeckDetailPage implements OnInit, OnDestroy {
             return;
           }
           this.loadingService.present('Search Card...');
-          /*this.mtgService.getCardByName(data.cardName)
-            .then(c => {
-              this.addOrUpdateCard(this.deck, c);
-            });*/
             let card = await this.mtgService.getCardByName(data.cardName);
             this.loadingService.dismiss();
             card = await this.cardUiService.addOrUpdateCard(this.deckService.getDeckById(this.deck.id), card);
@@ -145,18 +115,6 @@ export class DeckDetailPage implements OnInit, OnDestroy {
     this.alertService.presentCustomAlert('Add Card', inputs, buttons);
   }
 
-  private addOrUpdateCard(deck: Deck, c: Card) {
-    this.cardService.checkIfCardExists(this.deckService.getDeckById(deck.id), c.id).then(c2 => {
-      this.loadingService.dismiss();
-      c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck, c);
-    });
-  }
-
-  addCardToCollection(deck: Deck, card: Card) {
-    this.loadingService.present('Add Card...');
-    this.cardService.addCard(this.deckService.getDeckById(deck.id), card).then(() => this.cards.push(card)); // .then(() => this.updateDeckByCard(deck, card, 1));
-    this.loadingService.dismiss();
-  }
   updateDeckByCard(deck: Deck, card: Card, count: number): any {
     // TODO Update Deck Legality and count!
     card.legalities.forEach(l => {
@@ -165,27 +123,6 @@ export class DeckDetailPage implements OnInit, OnDestroy {
         console.log(deck);
        }
     });
-  }
-
-  async showAddCardCopyAlert(deckId: string, card: Card) {
-    this.loadingService.dismiss();
-    const buttons = [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => { }
-      },
-      {
-        text: 'Ok',
-        handler: () => {
-          this.loadingService.present('Update Card...');
-          card = this.cards.find(c => c.id === card.id);
-          this.changeCardCount(card, ++card.count);
-          this.loadingService.dismiss();
-        }
-      }
-    ];
-    this.alertService.presentCustomAlert('Do you want to add a Copie of ' + card.name + ' to your collection?', [], buttons);
   }
 
   ngOnInit() {}
