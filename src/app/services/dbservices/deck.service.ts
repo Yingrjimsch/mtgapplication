@@ -6,8 +6,8 @@ import { Deck } from 'src/app/classes/deck';
   providedIn: 'root'
 })
 export class DeckService {
-  
-  readonly deckCollection = 'decks'
+
+  readonly deckCollection = 'decks';
 
   constructor(private userService: UserService) { }
 
@@ -33,6 +33,10 @@ export class DeckService {
 
   deleteDeck(id: string) {
     return this.getDeckCollection().doc(id).delete();
+  }
+
+  updateDeck(deck: Deck) {
+    return this.getDeckById(deck.id).update(Object.assign({}, deck));
   }
 
   getDeckById(id: string) {

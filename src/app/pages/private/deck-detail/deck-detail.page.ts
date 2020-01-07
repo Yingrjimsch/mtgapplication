@@ -111,6 +111,7 @@ export class DeckDetailPage implements OnInit, OnDestroy {
             const oldCard = this.cards.find(c => c.id === card.id);
             if (oldCard) {
               this.cards[this.cards.indexOf(oldCard)] = card;
+              this.updateDeckByCard(this.deck, this.cards);
               return;
             }
             this.cards.push(card);
@@ -126,6 +127,7 @@ export class DeckDetailPage implements OnInit, OnDestroy {
     deck.legalities = legalities.shift().filter(v => legalities.every(a => a.indexOf(v) !== -1));
     deck.numberOfCards = cards.map(c => c.count).reduce((a, b) => a + b, 0);
     console.log(deck);
+    this.deckService.updateDeck(deck);
     //TODO update deck deckdbservice!
   }
 

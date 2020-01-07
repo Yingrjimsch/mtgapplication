@@ -12,7 +12,6 @@ export class CardUiService {
 
   constructor(private cardDbService: CardDbService, private loadingService: LoadingService, private alertService: AlertService) { }
 
-  
   public async addOrUpdateCard(doc: AngularFirestoreDocument, card: Card) {
     const cardPromise = await this.cardDbService.checkIfCardExists(doc, card.id);
     if (cardPromise.exists) {
