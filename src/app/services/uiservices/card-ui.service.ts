@@ -31,12 +31,15 @@ export class CardUiService {
 
   public async deleteCards(doc: AngularFirestoreDocument, card: Card) {
     if (card.count > 1) {
-      const count = await this.alertService.presentNumberAlert("How many copies of this card would you like to delete?", card.count);
+      const count = await this.alertService.presentNumberAlert('How many copies of this card would you like to delete?', card.count);
+      if (count === 0) {
+        return;
+      }
       if (card.count > count) {
         card.count = card.count - count;
         this.cardDbService.updateCard(doc, card);
         return card;
-      } 
+      }
     }
       card.count = 0;
       this.cardDbService.deleteCard(doc, card.id);
