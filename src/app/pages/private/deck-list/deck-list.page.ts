@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Platform, ModalController } from "@ionic/angular";
 import { CardCollection } from "../../../classes/card-collection";
 import { AlertService } from "../../../services/uiservices/alert.service";
@@ -17,7 +17,7 @@ import { Guid } from "guid-typescript";
   styleUrls: ["./deck-list.page.scss"]
 })
 export class DeckListPage implements OnInit {
-  public decks = new Array<Deck>();
+  public decks: Array<Deck>;
   constructor(
     public plt: Platform,
     private actionSheetService: ActionSheetService,
@@ -26,11 +26,7 @@ export class DeckListPage implements OnInit {
     private alertService: AlertService,
     private modalController: ModalController,
     private deckService: DeckService
-  ) {
-    deckService
-      .getDecksOfLoggedInUser()
-      .then(decks => decks.forEach(d => this.decks.push(d.data() as Deck)));
-  }
+  ) {}
 
   async presentActionSheet(deck: Deck) {
     const header = "Actions";
@@ -126,5 +122,18 @@ export class DeckListPage implements OnInit {
     return this.router.navigate(['private', 'deck-detail' , deckId]);  
   }
 
-  ngOnInit() {}
+  public async getDecks() { 
+    //.then(decks => decks.forEach(d => this.decks.push(d.data() as Deck)));
+  }
+
+  ngOnInit() {
+    console.log('deckinit')
+  }
+
+  ionViewWillEnter() {
+    this.decks = new Array<Deck>();
+    this.deckService
+      .getDecksOfLoggedInUser()
+      .then(decks => decks.forEach(d => this.decks.push(d.data() as Deck)));
+  }
 }
