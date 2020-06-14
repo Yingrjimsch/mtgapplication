@@ -129,13 +129,6 @@ export class MyArchivePage implements OnInit {
         handler: () => { }
       },
       {
-        text: 'Search',
-        handler: () => {
-          // TODO search card by name and show in something
-          console.log('Search Card By Name not done yet!');
-         }
-      },
-      {
         text: 'Add',
         handler: (data: { cardName: string; }) => {
           if (!data.cardName) {
@@ -215,7 +208,7 @@ export class MyArchivePage implements OnInit {
     this.loadingService.present('Search Card...');
     this.scannerService.scannCard()
       .then(card => this.mtgService.getCardByNameAndLanguage(card.getName(), this.mtgUser.language))
-      .then(card => this.addOrUpdateCard(card));
+      .then(card => this.addOrUpdateCard(card)).catch(error => this.loadingService.dismiss());
   }
 
   addCardsFile() {
