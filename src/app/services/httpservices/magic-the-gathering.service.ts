@@ -17,7 +17,6 @@ export class MagicTheGatheringService {
     return this.http.get('https://api.magicthegathering.io/v1/cards?name=' + parameter);
   }
 
-
   //DOWN HERE IS ALL NEW SHIT FROM UPDATE DECEMBER 2019
 
   getCardSource(name: string, language: string) {

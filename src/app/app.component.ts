@@ -64,8 +64,7 @@ export class AppComponent {
   ];
 
   getAppPagesByDevice(device: string) {
-    const visibility = this.authenticationService.authenticated ? 'private' : 'public';
-    //const visibility = this.authenticationService.isAuthenticated() ? 'private' : 'public';
+    const visibility = this.authenticationService.isLoggedIn ? 'private' : 'public';
     return this.appPages.filter(p => (p.device === device || p.device === undefined))
       .filter(p => (p.visibility === visibility || p.visibility === undefined));
   }
@@ -84,12 +83,6 @@ export class AppComponent {
     this.plt.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
-
-      // Right? --> I don't think so!
-      /*this.authenticationService.authenticationState.subscribe(state =>
-        state ? this.router.navigate(['private', 'home']) : this.router.navigate(['home'])
-      );
-      */
     });
   }
 

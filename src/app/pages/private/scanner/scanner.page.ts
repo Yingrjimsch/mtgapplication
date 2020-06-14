@@ -51,7 +51,7 @@ export class ScannerPage implements OnInit {
   }
 
   scannCard() {
-    this.scannerService.scannCard().then()
+    this.scannerService.scannCard()
     .then(card => this.mtgService.getCardByNameAndLanguage(card.getName(), card.getLanguage()))
     .then(card => this.card = card);
     // this.card = new Card('Angelic Rocket', '439528')
@@ -163,7 +163,7 @@ export class ScannerPage implements OnInit {
   }
 
   private addOrUpdateCard(deck: Deck, c: Card) {
-    this.cardService.checkIfCardExists(this.deckService.getDeckById(deck.id), c.id).then(c2 => {
+    this.cardService.getCardById(this.deckService.getDeckById(deck.id), c.id).then(c2 => {
       this.loadingService.dismiss();
       c2.exists ? this.showAddCardCopyAlert(deck.id, c2.data() as Card) : this.addCardToCollection(deck.id, c);
     });

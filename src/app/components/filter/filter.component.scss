@@ -12,9 +12,13 @@ ion-item {
 p {
   text-align: center;
   width: 100%;
-}
+  }
 ion-chip {
+  background-color: #63605e;
   cursor: pointer !important;
+}
+.activeChip {
+  background-color: #cac5c0;
 }
 .filterIcon {
   width: 80%;

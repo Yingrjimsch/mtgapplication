@@ -6,7 +6,6 @@ import { ActionSheetService } from "../../../services/uiservices/action-sheet.se
 import { ActionSheetButton } from "@ionic/core";
 import { FirestoreService } from "src/app/services/dbservices/firestore.service";
 import { Router } from "@angular/router";
-import { DeckDetailComponent } from "src/app/components/deck-detail/deck-detail.component";
 import { DeckService } from "src/app/services/dbservices/deck.service";
 import { Deck } from "src/app/classes/deck";
 import { Guid } from "guid-typescript";
@@ -122,12 +121,7 @@ export class DeckListPage implements OnInit {
     return this.router.navigate(['private', 'deck-detail' , deckId]);  
   }
 
-  public async getDecks() { 
-    //.then(decks => decks.forEach(d => this.decks.push(d.data() as Deck)));
-  }
-
   ngOnInit() {
-    console.log('deckinit')
   }
 
   ionViewWillEnter() {
@@ -135,5 +129,9 @@ export class DeckListPage implements OnInit {
     this.deckService
       .getDecksOfLoggedInUser()
       .then(decks => decks.forEach(d => this.decks.push(d.data() as Deck)));
+  }
+
+  public getLegalities(deck: Deck): string {
+    return deck.legalities.map(l => JSON.parse(l).format).join(', ');
   }
 }

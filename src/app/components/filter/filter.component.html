@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title class="centeredText"> Filter </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="applyFilter()">Apply</ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -20,14 +17,16 @@
     <ion-item>
       <p>
         <ion-chip *ngFor="let type of types" (click)="selectFilter(this.cardFilter.types, type)"
-          outline>
+          outline
+          [ngClass]="{'activeChip' : cardFilter.types.includes(type)}">
           <ion-label>{{type | titlecase}}</ion-label>
         </ion-chip>
       </p>
     </ion-item>
     <ion-item>
       <p>
-        <ion-chip *ngFor="let rarity of rarities" (click)="selectFilter(this.cardFilter.rarities, rarity)" outline>
+        <ion-chip *ngFor="let rarity of rarities" (click)="selectFilter(this.cardFilter.rarities, rarity)" outline
+        [ngClass]="{'activeChip' : cardFilter.rarities.includes(rarity)}">
           <ion-icon name="radio-button-on" [class]="rarity"></ion-icon>
           <ion-label>{{rarity | titlecase}}</ion-label>
         </ion-chip>
@@ -42,6 +41,7 @@
         </ion-col>
       </ion-row>
     </ion-item>
+    <ion-button color="success" expand="block" (click)="applyFilter()">Apply</ion-button>
     <ion-button expand="block" (click)="resetFilter()">Reset Filter</ion-button>
   </ion-grid>
 </ion-content>

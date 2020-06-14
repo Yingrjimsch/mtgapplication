@@ -13,8 +13,7 @@ export class RegisterPage implements OnInit {
 
   registerForm: FormGroup;
   constructor(formBuilder: FormBuilder, private userService: UserService, private authenticationService: AuthenticationService, private router: Router) {
-    //if (authenticationService.isAuthenticated()) {
-    if (authenticationService.authenticated) {
+    if (authenticationService.isLoggedIn) {
     router.navigate(['/home']);
     }
     this.registerForm = formBuilder.group({

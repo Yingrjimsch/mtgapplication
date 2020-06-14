@@ -68,11 +68,11 @@ export class AlertService {
       }],
       buttons: [
         {
-          text: 'No',
+          text: 'Cancel',
           handler: () => resolveFunction(0)
         },
         {
-          text: 'Yes',
+          text: 'Ok',
           handler: (data: { deleteCount: number; }) => resolveFunction(data.deleteCount),
         }
       ]

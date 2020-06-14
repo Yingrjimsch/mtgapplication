@@ -28,10 +28,10 @@
   <ion-list class="fullHeight" *ngIf="plt.is('mobile')">
     <div *ngIf="getFilteredCards().length > 0">
     <ion-item *ngFor="let card of getFilteredCards()">
-      <ion-thumbnail slot="start">
+      <ion-thumbnail slot="start" (click)="openCardDetail(card)">
         <img [src]="'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + card.multiverseId + '&type=card'" />
       </ion-thumbnail>
-      <ion-label>
+      <ion-label (click)="openCardDetail(card)">
         <h2>{{ card.name }}</h2>
         <p>{{ card.count}}x</p>
       </ion-label>

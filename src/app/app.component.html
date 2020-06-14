@@ -1,7 +1,7 @@
 <ion-app *ngIf="plt.is('mobile')">
   <ion-router-outlet main></ion-router-outlet>
   <!--<ion-tabs *ngIf="authenticationService.isAuthenticated()">-->
-    <ion-tabs *ngIf="authenticationService.authenticated">
+    <ion-tabs *ngIf="authenticationService.isLoggedIn">
     <ion-tab-bar slot="bottom">
       <ion-tab-button *ngFor="let p of getAppPagesByDevice('mobile')" [tab]="[p.route]">
         <ion-icon [name]="p.icon"></ion-icon>
@@ -24,7 +24,7 @@
             </ion-item>
           </ion-menu-toggle>
           <!--<ion-button *ngIf="authenticationService.isAuthenticated()" -->
-            <ion-button *ngIf="authenticationService.authenticated"          
+            <ion-button *ngIf="authenticationService.isLoggedIn"          
             (click)="logout()" 
           color="primary" 
           expand="block" >Logout</ion-button>

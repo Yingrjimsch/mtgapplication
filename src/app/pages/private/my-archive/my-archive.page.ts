@@ -16,6 +16,7 @@ import { LoadingService } from 'src/app/services/uiservices/loading.service';
 import { MtgUser } from 'src/app/classes/mtg-user';
 import { UserService } from 'src/app/services/dbservices/user.service';
 import { ToastService } from 'src/app/services/uiservices/toast.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-archive',
@@ -31,7 +32,7 @@ export class MyArchivePage implements OnInit {
   constructor(public plt: Platform, private actionSheetService: ActionSheetService, private cardService: CardService,
     private modalController: ModalController, private alertService: AlertService, private mtgService: MagicTheGatheringService,
     private scannerService: ScannerService, private loadingService: LoadingService, private userService: UserService,
-    private toastService: ToastService) {
+    private toastService: ToastService, private router: Router) {
       // TODO maybe store User in cache or something!
     userService.getUser().then(user => this.mtgUser = (user.data() as MtgUser))
       .catch(() => toastService.presentErrorToast('Could not find Loggedin User.'));
@@ -130,7 +131,7 @@ export class MyArchivePage implements OnInit {
       {
         text: 'Search',
         handler: () => {
-          // todo search card by name and show in something
+          // TODO search card by name and show in something
           console.log('Search Card By Name not done yet!');
          }
       },
@@ -176,7 +177,7 @@ export class MyArchivePage implements OnInit {
   }
 
   private addOrUpdateCard(c: Card) {
-    this.cardService.checkIfCardExists(this.userService.getUserDoc(), c.id).then(c2 => {
+    this.cardService.getCardById(this.userService.getUserDoc(), c.id).then(c2 => {
       this.loadingService.dismiss();
       c2.exists ? this.showAddCardCopyAlert(c2.data() as Card) : this.addCardToCollection(c);
     });
@@ -218,9 +219,14 @@ export class MyArchivePage implements OnInit {
   }
 
   addCardsFile() {
-    // import cards of file in clipboard
+    // TODO import cards of file in clipboard
     console.log('adding cards by file not done yet!');
   }
+
   ngOnInit() {
+  }
+
+  public openCardDetail(card: Card) {
+    this.router.navigate(['private', 'card-detail', card.id]);
   }
 }

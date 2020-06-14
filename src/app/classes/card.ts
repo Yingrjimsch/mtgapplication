@@ -8,6 +8,7 @@ export class Card {
     this.multiverseId = multiverseId;
     this.rarity = rarity;
     this.colors = colors;
+    // TODO: Not a good solution
     this.cmc = cmc >= 7 ? '7+' : cmc.toString();
     this.types = types;
     this.count = 1;
@@ -21,7 +22,7 @@ export class Card {
   public count: number;
   public foiled = false;
 
-  // Used for Card overview & filter
+  // used for Card overview & filter
   public id: string;
   public name: string;
   public multiverseId: string;

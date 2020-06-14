@@ -24,7 +24,8 @@
       <ion-item lines="none">
         <ion-label (click)="openDeckDetail(deck.id)">
           <h1> {{deck.deckName}} </h1>
-          <p *ngIf="plt.is('mobile')"> {{deck.numberOfCards }} Cards</p>
+          <p *ngIf="plt.is('mobile')"> {{ deck.numberOfCards }} Cards</p>
+          <p *ngIf="plt.is('mobile') && deck.legalities">Legality: {{ getLegalities(deck) }}</p>
         </ion-label>
         <ion-icon *ngIf="plt.is('mobile')" class="hoverItem marginTBRemoved" slot="end" size="large" color="dark"
           (click)="presentActionSheet(deck)" role="button" name="more">

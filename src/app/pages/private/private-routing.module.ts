@@ -7,8 +7,10 @@ const routes: Routes = [
   { path: 'scanner', loadChildren: './scanner/scanner.module#ScannerPageModule' },
   { path: 'my-archive', loadChildren: './my-archive/my-archive.module#MyArchivePageModule' },
   { path: 'account-settings', loadChildren: './account-settings/account-settings.module#AccountSettingsPageModule' },
-  //{ path: 'deck-detail', loadChildren: './deck-detail/deck-detail.module#DeckDetailPageModule' },
   { path: 'deck-detail/:id', loadChildren: './deck-detail/deck-detail.module#DeckDetailPageModule' },
+  { path: 'deck-detail/:deckId/card-detail/:cardId', loadChildren: './card-detail/card-detail.module#CardDetailPageModule' },
+  { path: 'card-detail/:cardId', loadChildren: './card-detail/card-detail.module#CardDetailPageModule' },
+
   
 ];
 

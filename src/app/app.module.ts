@@ -17,16 +17,14 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule  } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { environment } from '../environments/environment';
-import { CardListComponent } from './components/card-list/card-list.component';
-import { DeckDetailComponent } from './components/deck-detail/deck-detail.component';
 import { FilterComponent } from './components/filter/filter.component';
 
 
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
-  declarations: [AppComponent, CardListComponent, DeckDetailComponent, FilterComponent],
-  entryComponents: [DeckDetailComponent, FilterComponent],
+  declarations: [AppComponent, FilterComponent],
+  entryComponents: [FilterComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

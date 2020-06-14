@@ -51,6 +51,10 @@ export class CardService {
     return doc.collection(this.cardCollection);
   }
 
+  public getCardById(doc: AngularFirestoreDocument, cardId: string) {
+    return this.getCardCollection(doc).doc(cardId).get().toPromise()
+  }
+
   public getCards(doc: AngularFirestoreDocument) {
     return this.getCardCollection(doc).get().toPromise();
   }

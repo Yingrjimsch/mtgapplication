@@ -1,0 +1,12 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title class="centeredText"> {{ card?.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="card" class="centeredContent">
+    <img [src]="'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=' + card.multiverseId + '&type=card'" />
+  </div>
+<p class="centeredText">Available: {{ card?.count }}</p>
+</ion-content>
