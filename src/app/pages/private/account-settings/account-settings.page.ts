@@ -22,7 +22,7 @@ export class AccountSettingsPage implements OnInit {
   languageChange() {
     this.userService.updateUserLanguage(this.mtgUser.language);
   }
-  
+
   ngOnInit() {
   }
 }

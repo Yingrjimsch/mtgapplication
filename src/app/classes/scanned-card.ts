@@ -1,9 +1,7 @@
-import { Languages } from '../enums/languages';
-
 export class ScannedCard {
 
     constructor(description: string, locale: string) {
-        this.language = Languages[locale];
+        this.language = locale;
         this.name = description.split('\n')[0];
     }
     private name: string;

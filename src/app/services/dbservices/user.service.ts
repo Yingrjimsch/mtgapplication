@@ -17,7 +17,7 @@ export class UserService {
       this.firestore.collection(this.userCollection).doc(u.user.uid).set({
         email: email,
         language: 'english'
-      })
+      });
     });
   }
 
@@ -35,6 +35,6 @@ export class UserService {
     return this.getUserDoc().update({ language: language});
   }
 
-  
+
 }
 

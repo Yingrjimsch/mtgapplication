@@ -22,7 +22,7 @@ export class ScannerService {
 
   public async scannCard() {
     const imageData = await this.camera.getPicture(this.options).catch(error => this.toastService.presentErrorToast('error on get picture'));
-    const result = await this.visionService.getTextDetectionResponse(imageData).toPromise().catch(error => this.toastService.presentErrorToast('error on get tdr'));
+    const result = await this.visionService.getTextDetectionResponse(imageData).toPromise().catch(() => this.toastService.presentErrorToast('error on get tdr'));
     return this.parseTextDetectionResponse(result);
   }
 

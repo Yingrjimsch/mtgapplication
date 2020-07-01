@@ -11,7 +11,6 @@ import { CardFilter } from 'src/app/classes/card-filter';
 import { AlertService } from 'src/app/services/uiservices/alert.service';
 import { MagicTheGatheringService } from 'src/app/services/httpservices/magic-the-gathering.service';
 import { ScannerService } from 'src/app/services/uiservices/scanner.service';
-import { Languages } from 'src/app/enums/languages';
 import { LoadingService } from 'src/app/services/uiservices/loading.service';
 import { MtgUser } from 'src/app/classes/mtg-user';
 import { UserService } from 'src/app/services/dbservices/user.service';
@@ -33,7 +32,7 @@ export class MyArchivePage implements OnInit {
     private modalController: ModalController, private alertService: AlertService, private mtgService: MagicTheGatheringService,
     private scannerService: ScannerService, private loadingService: LoadingService, private userService: UserService,
     private toastService: ToastService, private router: Router) {
-      // TODO maybe store User in cache or something!
+      // TODO: maybe store User in cache or something!
     userService.getUser().then(user => this.mtgUser = (user.data() as MtgUser))
       .catch(() => toastService.presentErrorToast('Could not find Loggedin User.'));
     this.cardService.getCards(userService.getUserDoc()).then(cards => cards.forEach(c => this.cards.push(c.data() as Card)));
@@ -67,7 +66,7 @@ export class MyArchivePage implements OnInit {
     return c.name.toLowerCase().includes(this.searchstring.toLowerCase());
   }
 
-  // TODO decide if filterservice is maybe a good idea?
+  // TODO: decide if filterservice is maybe a good idea?
   async openFilter() {
     const modalPage = await this.modalController.create({
       component: FilterComponent,
@@ -102,7 +101,7 @@ export class MyArchivePage implements OnInit {
         role: 'cancel',
         handler: () => { }
       }
-      // TODO add Card to Deck
+      // TODO: add Card to Deck
     ];
     this.actionSheetService.presentCustomActionSheet(header, buttons);
   }
@@ -212,7 +211,7 @@ export class MyArchivePage implements OnInit {
   }
 
   addCardsFile() {
-    // TODO import cards of file in clipboard
+    // TODO: import cards of file in clipboard
     console.log('adding cards by file not done yet!');
   }
 

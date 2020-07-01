@@ -1,23 +1,23 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { MagicTheGatheringService } from "src/app/services/httpservices/magic-the-gathering.service";
-import { AlertService } from "src/app/services/uiservices/alert.service";
-import { Platform } from "@ionic/angular";
-import { ActionSheetService } from "src/app/services/uiservices/action-sheet.service";
-import { Deck } from "src/app/classes/deck";
-import { Card } from "src/app/classes/card";
-import { ActivatedRoute, Router } from "@angular/router";
-import { DeckService } from "src/app/services/dbservices/deck.service";
-import { ActionSheetButton } from "@ionic/core";
-import { LoadingService } from "src/app/services/uiservices/loading.service";
-import { CardUiService } from "src/app/services/uiservices/card-ui.service";
-import { CardDbService } from "src/app/services/dbservices/card-db.service";
-import { from } from "rxjs";
-import { flatMap } from "rxjs/operators";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MagicTheGatheringService } from 'src/app/services/httpservices/magic-the-gathering.service';
+import { AlertService } from 'src/app/services/uiservices/alert.service';
+import { Platform } from '@ionic/angular';
+import { ActionSheetService } from 'src/app/services/uiservices/action-sheet.service';
+import { Deck } from 'src/app/classes/deck';
+import { Card } from 'src/app/classes/card';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DeckService } from 'src/app/services/dbservices/deck.service';
+import { ActionSheetButton } from '@ionic/core';
+import { LoadingService } from 'src/app/services/uiservices/loading.service';
+import { CardUiService } from 'src/app/services/uiservices/card-ui.service';
+import { CardDbService } from 'src/app/services/dbservices/card-db.service';
+import { from } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
 @Component({
-  selector: "app-deck-detail",
-  templateUrl: "./deck-detail.page.html",
-  styleUrls: ["./deck-detail.page.scss"],
+  selector: 'app-deck-detail',
+  templateUrl: './deck-detail.page.html',
+  styleUrls: ['./deck-detail.page.scss'],
 })
 export class DeckDetailPage implements OnInit, OnDestroy {
   deck: Deck;
@@ -51,12 +51,12 @@ export class DeckDetailPage implements OnInit, OnDestroy {
   private sub: any;
 
   async presentActionSheet(card: Card) {
-    const header = "Actions";
+    const header = 'Actions';
     const buttons: ActionSheetButton[] = [
       {
-        text: "Delete",
-        role: "destructive",
-        icon: "trash",
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
         handler: async () => {
           const c = await this.cardUiService.deleteCards(
             this.deckService.getDeckById(this.deck.id),
@@ -72,16 +72,16 @@ export class DeckDetailPage implements OnInit, OnDestroy {
         },
       },
       {
-        text: "Add One",
-        icon: "arrow-round-up",
+        text: 'Add One',
+        icon: 'arrow-round-up',
         handler: () => {
           this.changeCardCount(card, ++card.count);
         },
       },
       {
-        text: "Cancel",
-        icon: "close",
-        role: "cancel",
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
         handler: () => {},
       },
     ];
@@ -99,24 +99,24 @@ export class DeckDetailPage implements OnInit, OnDestroy {
   async addCardByName() {
     const inputs = [
       {
-        name: "cardName",
-        label: "Card Name",
-        placeholder: "Opt",
+        name: 'cardName',
+        label: 'Card Name',
+        placeholder: 'Opt',
       },
     ];
     const buttons = [
       {
-        text: "Cancel",
-        role: "cancel",
+        text: 'Cancel',
+        role: 'cancel',
         handler: () => {},
       },
       {
-        text: "Add",
+        text: 'Add',
         handler: async (data: { cardName: string }) => {
           if (!data.cardName) {
             return;
           }
-          this.loadingService.present("Search Card...");
+          this.loadingService.present('Search Card...');
           let card = await this.mtgService.getCardByName(data.cardName);
           this.loadingService.dismiss();
           card = await this.cardUiService.addOrUpdateCard(
@@ -137,7 +137,7 @@ export class DeckDetailPage implements OnInit, OnDestroy {
         },
       },
     ];
-    this.alertService.presentCustomAlert("Add Card", inputs, buttons);
+    this.alertService.presentCustomAlert('Add Card', inputs, buttons);
   }
 
   updateDeckByCard(deck: Deck, cards: Array<Card>) {
@@ -150,7 +150,7 @@ export class DeckDetailPage implements OnInit, OnDestroy {
     deck.numberOfCards = cards.map((c) => c.count).reduce((a, b) => a + b, 0);
     console.log(deck);
     this.deckService.updateDeck(deck);
-    //TODO update deck deckdbservice!
+    // TODO: update deck deckdbservice!
   }
 
   ngOnInit() {}

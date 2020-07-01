@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { CardService } from '../../services/dbservices/card.service';
 import { ActivatedRoute } from '@angular/router';
 import { FirestoreService } from 'src/app/services/dbservices/firestore.service';
-import { Languages } from 'src/app/enums/languages';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +16,5 @@ import { Languages } from 'src/app/enums/languages';
 export class HomePage {
 
   constructor(private c: FirestoreService, private c3: CardService) {
-    console.log(Languages['en']);
-    }
+  }
 }

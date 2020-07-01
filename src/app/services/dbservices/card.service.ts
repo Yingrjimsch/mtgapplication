@@ -47,12 +47,12 @@ export class CardService {
   // After Update December 2019
 
   public getCardCollection(doc: AngularFirestoreDocument) {
-    //return this.userService.getUserDoc()
+    // return this.userService.getUserDoc()
     return doc.collection(this.cardCollection);
   }
 
   public getCardById(doc: AngularFirestoreDocument, cardId: string) {
-    return this.getCardCollection(doc).doc(cardId).get().toPromise()
+    return this.getCardCollection(doc).doc(cardId).get().toPromise();
   }
 
   public getCards(doc: AngularFirestoreDocument) {
@@ -69,10 +69,10 @@ export class CardService {
 
   updateCard(doc: AngularFirestoreDocument, card: Card) {
     return this.getCardCollection(doc).doc(card.id).update(Object.assign({}, card));
-    //return this.getCardCollection().doc(card.id).update(Object.assign({}, card));
+    // return this.getCardCollection().doc(card.id).update(Object.assign({}, card));
   }
 
-  addCard(doc: AngularFirestoreDocument,card: Card) {
+  addCard(doc: AngularFirestoreDocument, card: Card) {
     return this.getCardCollection(doc).doc(card.id).set(Object.assign({}, card));
   }
 /*
